@@ -1,29 +1,31 @@
 Shader "Custom/NoLighting"
 {
     Properties {
-        _MainTex ("Texture", 2D) = "white" {}
-        _Color ("Color", Color) = (1, 1, 1, 1)
+        _diffuseMap ("Texture", 2D) = "white" {}
+        _normalMap ("Normal", 2D) = "bump" {}
+        _color ("Color", Color) = (1, 1, 1, 1)
     }
 
     SubShader {
-        Tags { "RenderType" = "Opaque" }
-        LOD 200
-        
         CGPROGRAM
-        #pragma surface surf CustomLighting
+        #pragma surface surf NoLighting
 
         struct Input {
-            float2 uv_MainTex;
+            float2 uv_diffuseMap;
+            float2 uv_normalMap;
         };
 
-        sampler2D _MainTex;
-        float4 _Color;
+        sampler2D _diffuseMap;
+        sampler2D _normalMap;
+        fixed4 _color;
         
         void surf(Input IN, inout SurfaceOutput o) {
-            o.Albedo = tex2D(_MainTex, IN.uv_MainTex).rgb * _Color.rgb;
+            o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _color.rgb;
+            o.Alpha = tex2D(_diffuseMap, IN.uv_diffuseMap).a;
+            o.Normal = UnpackNormal(tex2D(_normalMap, IN.uv_normalMap));
         }
 
-        half4 LightingCustomLighting(SurfaceOutput s, half3 lightDir, half atten) {
+        half4 LightingNoLighting(SurfaceOutput s, half3 lightDir, half atten) {
             return half4(s.Albedo, s.Alpha);
         }
         ENDCG
