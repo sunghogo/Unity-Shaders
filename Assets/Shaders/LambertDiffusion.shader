@@ -14,7 +14,6 @@ Shader "Custom/LambertDiffusion"
         struct Input {
             float2 uv_diffuseMap;
             float2 uv_normalMap;
-            float3 viewDir;
         };
 
         sampler2D _diffuseMap;
@@ -23,7 +22,7 @@ Shader "Custom/LambertDiffusion"
         half _bump; 
 
         void surf(Input IN, inout SurfaceOutput o) {
-            o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _color.rgb * saturate(dot(IN.viewDir, o.Normal));
+            o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _color.rgb;
             o.Alpha = tex2D(_diffuseMap, IN.uv_diffuseMap).a * _color.a;
             o.Normal = UnpackNormal(tex2D(_normalMap, IN.uv_normalMap));
             o.Normal *= float3(_bump, _bump, 1);
