@@ -23,7 +23,7 @@ Shader "Custom/LambertView"
         half _bump; 
 
         void surf(Input IN, inout SurfaceOutput o) {
-            o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _color.rgb * saturate(dot(IN.viewDir, o.Normal));
+            o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _color.rgb * saturate(dot(normalize(IN.viewDir), o.Normal));
             o.Alpha = tex2D(_diffuseMap, IN.uv_diffuseMap).a * _color.a;
             o.Normal = UnpackNormal(tex2D(_normalMap, IN.uv_normalMap));
             o.Normal *= float3(_bump, _bump, 1);
