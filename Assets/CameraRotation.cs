@@ -3,11 +3,19 @@ using System.Linq;
 
 public class CameraRotation : MonoBehaviour
 {
-    [SerializeField] private float _cameraDistance = 10f;
-    [SerializeField] private  float _cameraHeight = 2f;
-    [SerializeField] private  float _cameraRotationSpeed = 50f;
+    [SerializeField] [Range(1, 50)] private float _cameraDistance = 10f;
+    [SerializeField] [Range(-25, 25)] private  float _cameraHeight = 2f;
+    [SerializeField] [Range(25, 100)] private  float _cameraRotationSpeed = 50f;
+    [SerializeField] [Range(25, 100)] private  float _cameraZoomSpeed = 25f;
     [SerializeField] private float _circularAngle = 0f;
     [SerializeField] private bool _fixedHeight = false;
+    [SerializeField] private bool _manualRotation = false;
+    private float _closeUpMax = 5f;
+    private float _closeUpHeight = 3f;
+    private float _closeUpMin = 1f;
+
+    
+
     
     private Transform _targetTransform;
 
@@ -21,6 +29,17 @@ public class CameraRotation : MonoBehaviour
     void Update()
     {
         UpdateCameraTransform();
+
+        if (Input.GetKey(KeyCode.UpArrow)) ZoomIn();
+        if (Input.GetKey(KeyCode.DownArrow)) ZoomOut();
+
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)) {
+            if (Input.GetKey(KeyCode.LeftArrow)) RotateLeft();
+            if (Input.GetKey(KeyCode.RightArrow)) RotateRight();
+        } else {
+            _manualRotation = false;
+        }
+
     }
 
     private void UpdateCameraTransform()
@@ -30,7 +49,11 @@ public class CameraRotation : MonoBehaviour
     }
 
     private void CalculateNewCameraPosition() {
-        _circularAngle += _cameraRotationSpeed * Time.deltaTime;
+        if (!_manualRotation) _circularAngle += _cameraRotationSpeed * Time.deltaTime;
+        if (_cameraDistance < _closeUpMax) { 
+            _fixedHeight = true;
+            InterpolateCameraHeight();
+        } else _fixedHeight = false;
 
         float newXOffset = Mathf.Sin(_circularAngle * Mathf.Deg2Rad) * _cameraDistance;
         float newZOffset = Mathf.Cos(_circularAngle * Mathf.Deg2Rad) * _cameraDistance;
@@ -44,5 +67,27 @@ public class CameraRotation : MonoBehaviour
     private void LookAtTarget()
     {
         transform.LookAt(_targetTransform?.position ?? Vector3.zero);
+    }
+
+    private void ZoomOut() {
+        _cameraDistance = Mathf.Clamp(_cameraDistance + Time.deltaTime * _cameraZoomSpeed, 1, 100);
+    }
+
+    private void ZoomIn() {
+        _cameraDistance = Mathf.Clamp(_cameraDistance - Time.deltaTime * _cameraZoomSpeed, 1, 100);
+    }
+
+    private void RotateLeft() {
+        _manualRotation = true;
+        _circularAngle -= Time.deltaTime * _cameraRotationSpeed * 2;
+    }
+
+    private void RotateRight() {
+        _manualRotation = true;
+        _circularAngle += Time.deltaTime * _cameraRotationSpeed * 2;
+    }
+
+    private void InterpolateCameraHeight() {
+        _cameraHeight = (1 - ((_cameraDistance - _closeUpMin) / (_closeUpMax - _closeUpMin))) * _closeUpHeight; 
     }
 }
