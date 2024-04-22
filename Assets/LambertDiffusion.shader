@@ -31,7 +31,7 @@ Shader "Custom/LambertDiffusion"
         // Experimenting with fixed4 (11-bit precision) vs 
         fixed4 LightingLambertDiffusion(SurfaceOutput s, half3 lightDir, half atten) {
             fixed lambert = saturate(dot(s.Normal, lightDir));
-            return fixed4(s.Albedo * lambert, s.Alpha) * atten;
+            return fixed4(s.Albedo * lambert * atten, s.Alpha);
         }
 
         ENDCG
