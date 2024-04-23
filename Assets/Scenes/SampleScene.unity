@@ -287,8 +287,20 @@ PrefabInstance:
       value: Main Camera
       objectReference: {fileID: 0}
     - target: {fileID: 4373118382185358978, guid: 8b947255f16ad0b4596a9ed0f0c0aa96, type: 3}
+      propertyPath: _closeUpMin
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4373118382185358978, guid: 8b947255f16ad0b4596a9ed0f0c0aa96, type: 3}
+      propertyPath: _closeUpHeight
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4373118382185358978, guid: 8b947255f16ad0b4596a9ed0f0c0aa96, type: 3}
       propertyPath: _cameraDistance
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4373118382185358978, guid: 8b947255f16ad0b4596a9ed0f0c0aa96, type: 3}
+      propertyPath: _cameraZoomSpeed
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8289745284902861261, guid: 8b947255f16ad0b4596a9ed0f0c0aa96, type: 3}
       propertyPath: m_LocalPosition.x

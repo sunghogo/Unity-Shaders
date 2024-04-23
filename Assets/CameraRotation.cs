@@ -1,18 +1,18 @@
 using UnityEngine;
-using System.Linq;
 
 public class CameraRotation : MonoBehaviour
 {
     [SerializeField] [Range(1, 50)] private float _cameraDistance = 10f;
-    [SerializeField] [Range(-25, 25)] private  float _cameraHeight = 2f;
+    [SerializeField] [Range(-25, 25)] private  float _cameraHeight = 0.6f;
     [SerializeField] [Range(25, 100)] private  float _cameraRotationSpeed = 50f;
     [SerializeField] [Range(25, 100)] private  float _cameraZoomSpeed = 25f;
     [SerializeField] private float _circularAngle = 0f;
     [SerializeField] private bool _fixedHeight = false;
     [SerializeField] private bool _manualRotation = false;
-    private float _closeUpMax = 5f;
-    private float _closeUpHeight = 3f;
-    private float _closeUpMin = 1f;
+     private float _closeUpX = -0.1f;
+     private float _closeUpMax = 8f;
+     private float _closeUpHeight = 0.6f;
+     private float _closeUpMin = 2f;
 
     
 
@@ -58,7 +58,7 @@ public class CameraRotation : MonoBehaviour
         float newXOffset = Mathf.Sin(_circularAngle * Mathf.Deg2Rad) * _cameraDistance;
         float newZOffset = Mathf.Cos(_circularAngle * Mathf.Deg2Rad) * _cameraDistance;
 
-        float newXPosition = (_targetTransform?.position.x ?? 0) + newXOffset;
+        float newXPosition = (_targetTransform?.position.x ?? 0) + newXOffset + InterpolateCameraX();
         float newZPosition = (_targetTransform?.position.z ?? 0) + newZOffset;
         float newYPosition = _fixedHeight ? _cameraHeight : _targetTransform.position.y;
 
@@ -67,14 +67,15 @@ public class CameraRotation : MonoBehaviour
     private void LookAtTarget()
     {
         transform.LookAt(_targetTransform?.position ?? Vector3.zero);
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
     }
 
     private void ZoomOut() {
-        _cameraDistance = Mathf.Clamp(_cameraDistance + Time.deltaTime * _cameraZoomSpeed, 1, 100);
+        _cameraDistance = Mathf.Clamp(_cameraDistance + Time.deltaTime * _cameraZoomSpeed, _closeUpMin, 100);
     }
 
     private void ZoomIn() {
-        _cameraDistance = Mathf.Clamp(_cameraDistance - Time.deltaTime * _cameraZoomSpeed, 1, 100);
+        _cameraDistance = Mathf.Clamp(_cameraDistance - Time.deltaTime * _cameraZoomSpeed, _closeUpMin, 100);
     }
 
     private void RotateLeft() {
@@ -88,6 +89,12 @@ public class CameraRotation : MonoBehaviour
     }
 
     private void InterpolateCameraHeight() {
-        _cameraHeight = (1 - ((_cameraDistance - _closeUpMin) / (_closeUpMax - _closeUpMin))) * _closeUpHeight; 
+        float linearFormula = _cameraDistance >= _closeUpMax ? 1 : (1 - ((_cameraDistance - _closeUpMin) / (_closeUpMax - _closeUpMin)));
+        _cameraHeight = linearFormula * _closeUpHeight; 
+    }
+
+    private float InterpolateCameraX() {
+        float linearFormula = _cameraDistance >= _closeUpMax ? 1 : (1 - ((_cameraDistance - _closeUpMin) / (_closeUpMax - _closeUpMin)));
+        return linearFormula * _closeUpX; 
     }
 }
