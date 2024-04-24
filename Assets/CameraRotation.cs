@@ -9,14 +9,10 @@ public class CameraRotation : MonoBehaviour
     [SerializeField] private float _circularAngle = 0f;
     [SerializeField] private bool _fixedHeight = false;
     [SerializeField] private bool _manualRotation = false;
-     private float _closeUpX = -0.1f;
-     private float _closeUpMax = 8f;
-     private float _closeUpHeight = 0.6f;
-     private float _closeUpMin = 2f;
-
-    
-
-    
+    private float _closeUpX = -0.1f;
+    private float _closeUpMax = 8f;
+    private float _closeUpHeight = 0.6f;
+    private float _closeUpMin = 2f;
     private Transform _targetTransform;
 
     // Start is called before the first frame update
