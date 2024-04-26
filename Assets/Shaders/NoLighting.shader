@@ -7,6 +7,10 @@ Shader "Custom/NoLighting"
     }
 
     SubShader {
+        Tags { 
+            "Queue" = "Geometry" 
+        }
+
         CGPROGRAM
         #pragma surface surf NoLighting
 

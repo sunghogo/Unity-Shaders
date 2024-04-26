@@ -8,6 +8,10 @@ Shader "Custom/LambertAndViewDirection"
     }
 
     SubShader {
+        Tags { 
+            "Queue" = "Geometry" 
+        }
+
         CGPROGRAM
         #pragma surface surf LambertDiffusion
 
