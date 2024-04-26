@@ -5,9 +5,12 @@ using Unity.VisualScripting;
 public class Shaders : MonoBehaviour
 {
     [SerializeField] private Shader _noLighting;
-    [SerializeField] private Shader _viewDirection;
-    [SerializeField] private Shader _lambertDiffusion;
-    [SerializeField] private Shader _lambertView;
+    [SerializeField] private Shader _ambientLighting;
+    [SerializeField] private Shader _viewDirectionLighting;
+    [SerializeField] private Shader _lambertDiffusionLighting;
+    [SerializeField] private Shader _lambertViewLighting;
+    [SerializeField] private Shader _phongLighting;
+
     private TextMeshProUGUI _tmp;
 
     private LODGroup _lodGroup;
@@ -18,9 +21,10 @@ public class Shaders : MonoBehaviour
     void Start()
     {
         _lodGroup = GetComponent<LODGroup>();
-        _shaders = new Shader[4] {_noLighting, _viewDirection, _lambertDiffusion, _lambertView};
+        _shaders = new Shader[6] {_noLighting, _ambientLighting, _viewDirectionLighting, _lambertDiffusionLighting, _lambertViewLighting, _phongLighting};
         _tmp = FindObjectOfType<Canvas>().GetComponentInChildren<TextMeshProUGUI>();
 
+        UpdateChildShaders(GetCurrentShader());
         UpdateText();
     }
 
@@ -28,19 +32,26 @@ public class Shaders : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space)) {
-            ChangeChildShaders();
+            CycleShaders();
             UpdateText();
         }
     }
 
-    private void ChangeChildShaders() {
+    private void CycleShaders() {
         _shadersIndex = _shadersIndex >= _shaders.Length - 1 ? 0 : _shadersIndex + 1;
+        UpdateChildShaders(GetCurrentShader());
+    }
 
+    private void UpdateChildShaders(Shader shader) {
         foreach (var lod in _lodGroup.GetLODs()) {
             foreach (var renderer in lod.renderers) {
-                renderer.material.shader = _shaders[_shadersIndex];
+                renderer.material.shader = shader;
             }
         }
+    }
+
+    private Shader GetCurrentShader() {
+        return _shaders[_shadersIndex];
     }
 
     private void UpdateText() {

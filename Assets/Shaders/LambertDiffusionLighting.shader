@@ -3,7 +3,8 @@ Shader "Custom/LambertDiffusionLighting"
     Properties {
         _diffuseMap ("Texture", 2D) = "white" {}
         _normalMap ("Normal", 2D) = "bump" {}
-        _color ("Color", Color) = (1, 1, 1, 1)
+        _modelColor ("Model Color", Color) = (1, 1, 1, 1)
+        _ambientColor ("Ambient Color", Color) = (1, 1, 1, 1)
     }
 
     SubShader {
@@ -21,18 +22,19 @@ Shader "Custom/LambertDiffusionLighting"
 
         sampler2D _diffuseMap;
         sampler2D _normalMap;
-        fixed4 _color;
+        fixed4 _modelColor;
+        fixed4 _ambientColor;
 
         void surf(Input IN, inout SurfaceOutput o) {
-            o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _color.rgb;
-            o.Alpha = tex2D(_diffuseMap, IN.uv_diffuseMap).a * _color.a;
+            o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _modelColor.rgb;
+            o.Alpha = tex2D(_diffuseMap, IN.uv_diffuseMap).a * _modelColor.a;
             o.Normal = normalize(UnpackNormal(tex2D(_normalMap, IN.uv_normalMap)).xyz);
         }
 
         // Experimenting with fixed4 (11-bit precision)
         half4 LightingLambertDiffusion(SurfaceOutput s, half3 lightDir, half atten) {
             half diffuse = saturate(dot(normalize(s.Normal), normalize(lightDir)));
-            return half4(s.Albedo * diffuse * atten, s.Alpha);
+            return half4(s.Albedo * _ambientColor.rgb * diffuse * atten, s.Alpha);
         }
 
         ENDCG
