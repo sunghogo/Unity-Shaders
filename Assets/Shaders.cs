@@ -25,7 +25,7 @@ public class Shaders : MonoBehaviour
         _shaders = new Shader[6] {_noLighting, _ambientLighting, _viewDirectionLighting, _lambertDiffusionLighting, _lambertViewLighting, _phongLighting};
         _tmp = FindObjectOfType<Canvas>().GetComponentInChildren<TextMeshProUGUI>();
 
-        UpdateChildShaders(GetCurrentShader());
+        UpdateShaders(GetCurrentShader());
         UpdateText();
     }
 
@@ -40,10 +40,10 @@ public class Shaders : MonoBehaviour
 
     private void CycleShaders() {
         _shadersIndex = _shadersIndex >= _shaders.Length - 1 ? 0 : _shadersIndex + 1;
-        UpdateChildShaders(GetCurrentShader());
+        UpdateShaders(GetCurrentShader());
     }
 
-    private void UpdateChildShaders(Shader shader) {
+    private void UpdateShaders(Shader shader) {
         _testMaterial.shader = shader;
     }
 
