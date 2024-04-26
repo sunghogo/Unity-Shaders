@@ -1,4 +1,4 @@
-Shader "Custom/LambertView"
+Shader "Custom/LambertAndViewDirection"
 {
     Properties {
         _diffuseMap ("Texture", 2D) = "white" {}
@@ -29,7 +29,7 @@ Shader "Custom/LambertView"
             o.Normal *= float3(_bump, _bump, 1);
         }
 
-        // Experimenting with fixed4 (11-bit precision) vs 
+        // Experimenting with fixed4 (11-bit precision)
         fixed4 LightingLambertDiffusion(SurfaceOutput s, half3 lightDir, half atten) {
             fixed lambert = saturate(dot(s.Normal, lightDir));
             return fixed4(s.Albedo * lambert * atten, s.Alpha);
