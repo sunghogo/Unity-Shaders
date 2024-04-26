@@ -4,25 +4,24 @@ using TMPro;
 using Unity.VisualScripting;
 public class Shaders : MonoBehaviour
 {
+    // Add the following shaders and material in the Inspector
     [SerializeField] private Shader _noLighting;
     [SerializeField] private Shader _ambientLighting;
     [SerializeField] private Shader _viewDirectionLighting;
     [SerializeField] private Shader _lambertDiffusionLighting;
     [SerializeField] private Shader _lambertViewLighting;
+    [SerializeField] private Shader _specularLighting;
     [SerializeField] private Shader _phongLighting;
     [SerializeField] private Material _testMaterial;
 
     private TextMeshProUGUI _tmp;
-
-    private LODGroup _lodGroup;
     private Shader[] _shaders;
     private int _shadersIndex = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        _lodGroup = GetComponent<LODGroup>();
-        _shaders = new Shader[6] {_noLighting, _ambientLighting, _viewDirectionLighting, _lambertDiffusionLighting, _lambertViewLighting, _phongLighting};
+        _shaders = new Shader[7] {_noLighting, _ambientLighting, _viewDirectionLighting, _lambertDiffusionLighting, _lambertViewLighting, _specularLighting, _phongLighting};
         _tmp = FindObjectOfType<Canvas>().GetComponentInChildren<TextMeshProUGUI>();
 
         UpdateShaders(GetCurrentShader());
