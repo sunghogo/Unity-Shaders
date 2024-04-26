@@ -4,7 +4,7 @@ Shader "Custom/LambertDiffusionLighting"
         _diffuseMap ("Texture", 2D) = "white" {}
         _normalMap ("Normal", 2D) = "bump" {}
         _modelColor ("Model Color", Color) = (1, 1, 1, 1)
-        _ambientColor ("Ambient Color", Color) = (0, 0, 1, 1)
+        _ambientColor ("Ambient Light Color", Color) = (0, 0, 1, 1)
     }
 
     SubShader {
@@ -33,7 +33,8 @@ Shader "Custom/LambertDiffusionLighting"
 
         // Experimenting with fixed4 (11-bit precision)
         half4 LightingLambertDiffusion(SurfaceOutput s, half3 lightDir, half atten) {
-            half diffuse = saturate(dot(normalize(s.Normal), normalize(lightDir)));
+            half LdotN = saturate(dot(normalize(lightDir), normalize(s.Normal)));
+            half diffuse = LdotN;
             return half4(s.Albedo * _ambientColor.rgb * diffuse * atten, s.Alpha);
         }
 

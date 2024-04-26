@@ -5,7 +5,7 @@ Shader "Custom/PhongLighting"
         _diffuseMap ("Texture", 2D) = "white" {}
         _normalMap ("Normal", 2D) = "bump" {}
         _modelColor ("Model Color", Color) = (1, 1, 1, 1)
-        _ambientColor ("Ambient Color", Color) = (0, 0, 1, 1)
+        _ambientColor ("Ambient Light Color", Color) = (0, 0, 1, 1)
     }
     SubShader
     {
@@ -37,7 +37,10 @@ Shader "Custom/PhongLighting"
         }
 
         half4 LightingPhongLighting(SurfaceOutput s, half3 lightDir, half3 viewDir, half atten) {
-            half diffuse = saturate(dot(normalize(s.Normal), normalize(lightDir)));
+            half LdotN = saturate(dot(normalize(lightDir), normalize(s.Normal)));
+            
+            
+            half diffuse = LdotN;
             return half4(s.Albedo * _ambientColor * diffuse * atten, s.Alpha);
         }
         ENDCG
