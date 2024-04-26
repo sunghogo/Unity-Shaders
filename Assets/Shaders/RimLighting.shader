@@ -29,17 +29,19 @@ Shader "Custom/RimLighting"
         fixed4 _rimColor;
 
         void surf(Input IN, inout SurfaceOutput o) {
-            o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _modelColor.rgb;
+            fixed4 darken = fixed4(0.1, 0.1, 0.1, 1);
+            o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _modelColor.rgb * darken.rgb;
             o.Alpha = tex2D(_diffuseMap, IN.uv_diffuseMap).a * _modelColor.a;
             o.Normal = normalize(UnpackNormal(tex2D(_normalMap, IN.uv_normalMap)).xyz);
-            
-            half NdotV = saturate(dot(normalize(o.Normal), normalize(IN.viewDir)));
-            half rim = 1 - NdotV;
-            o.Emission = _rimColor.rgb * pow(rim, _rimPower);
         }
 
-        half4 LightingNoLighting(SurfaceOutput s, half3 lightDir, half atten) {
-            return half4(s.Albedo, s.Alpha);
+        half4 LightingNoLighting(SurfaceOutput s, half3 lightDir, half3 viewDir, half atten) {
+            half NdotV = saturate(dot(normalize(s.Normal), normalize(viewDir)));
+            half InvertedNdotV = 1 - NdotV;
+            half rimStrength = pow(InvertedNdotV, _rimPower);
+            half3 rim = _rimColor.rgb * atten * rimStrength;
+
+            return half4(s.Albedo + rim, s.Alpha);
         }
 
         ENDCG

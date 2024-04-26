@@ -6,7 +6,10 @@ Shader "Custom/PhongLighting"
         _normalMap ("Normal", 2D) = "bump" {}
         _modelColor ("Model Color", Color) = (1, 1, 1, 1)
         _ambientColor ("Ambient Light Color", Color) = (0, 0, 1, 1)
+        _specularColor ("Specular Light Color", Color) = (1, 0, 0, 1)
+        _specularPower ("Specular Power", Range(0, 96)) = 48
     }
+
     SubShader
     {
         Tags { 
@@ -27,6 +30,8 @@ Shader "Custom/PhongLighting"
         sampler2D _normalMap;
         fixed4 _modelColor;
         fixed4 _ambientColor;
+        fixed4 _specularColor;
+        half _specularPower;
 
 
         void surf (Input IN, inout SurfaceOutput o)
@@ -39,16 +44,19 @@ Shader "Custom/PhongLighting"
         half4 LightingPhongLighting(SurfaceOutput s, half3 lightDir, half3 viewDir, half atten) {
             half3 lightDirNorm = normalize(lightDir);
             half LdotN = saturate(dot(lightDirNorm, s.Normal));
+            half3 diffuse = s.Albedo * _ambientColor * atten * LdotN;
             
             // Reflection vector: R = L - 2 * (dot(l, N)) x N where L is light vector reflecting off the surface
             // Can opt for reflect(L, N) next time;
-            half3 reflection = normalize(-lightDirNorm) - 2 * dot(-lightDirNorm, s.Normal) * s.Normal;
+            half3 reflection = -lightDirNorm - 2 * dot(-lightDirNorm, s.Normal) * s.Normal;
+            half VdotR = saturate(dot(normalize(viewDir), reflection));
+            half specularStrength = pow(VdotR, _specularPower);
+            half3 specular = _specularColor * atten * specularStrength;
             
-            
-            half diffuse = LdotN;
-            return half4(s.Albedo * _ambientColor * diffuse * atten, s.Alpha);
+            return half4(diffuse + specular, s.Alpha);
         }
         ENDCG
     }
+
     FallBack "Diffuse"
 }

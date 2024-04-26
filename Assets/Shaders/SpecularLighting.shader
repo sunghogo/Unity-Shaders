@@ -34,7 +34,8 @@ Shader "Custom/SpecularLighting"
 
         void surf (Input IN, inout SurfaceOutput o)
         {
-            o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _modelColor.rgb;
+            fixed4 darken = fixed4(0.1, 0.1, 0.1, 1);
+            o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _modelColor.rgb * darken.rgb;
             o.Alpha = tex2D(_diffuseMap, IN.uv_diffuseMap).a * _modelColor.a;
             o.Normal = normalize(UnpackNormal(tex2D(_normalMap, IN.uv_normalMap)).xyz);
         }
@@ -44,11 +45,12 @@ Shader "Custom/SpecularLighting"
 
             // Reflection vector: R = L - 2 * (dot(l, N)) x N where L is light vector reflecting off the surface
             // Can opt for reflect(L, N) next time;
-            half3 reflection = normalize(-lightDirNorm) - 2 * dot(-lightDirNorm, s.Normal) * s.Normal;
+            half3 reflection = -lightDirNorm - 2 * dot(-lightDirNorm, s.Normal) * s.Normal;
             half VdotR = saturate(dot(normalize(viewDir), reflection));
-            half specular = pow(VdotR, _specularPower);
+            half specularStrength = pow(VdotR, _specularPower);
+            half3 specular = _specularColor * atten * specularStrength;
             
-            return half4(s.Albedo * _specularColor * specular * atten, s.Alpha);
+            return half4(s.Albedo + specular, s.Alpha);
         }
         ENDCG
     }
