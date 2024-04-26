@@ -9,7 +9,8 @@ public class Shaders : MonoBehaviour
     [SerializeField] private Shader _ambientLighting;
     [SerializeField] private Shader _viewDirectionLighting;
     [SerializeField] private Shader _lambertDiffusionLighting;
-    [SerializeField] private Shader _lambertViewLighting;
+    [SerializeField] private Shader _rimLighting;
+    [SerializeField] private Shader _lambertWithRimLighting;
     [SerializeField] private Shader _specularLighting;
     [SerializeField] private Shader _phongLighting;
     [SerializeField] private Material _testMaterial;
@@ -21,7 +22,7 @@ public class Shaders : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _shaders = new Shader[7] {_noLighting, _ambientLighting, _viewDirectionLighting, _lambertDiffusionLighting, _lambertViewLighting, _specularLighting, _phongLighting};
+        _shaders = new Shader[8] {_noLighting, _ambientLighting, _viewDirectionLighting, _lambertDiffusionLighting, _rimLighting, _lambertWithRimLighting, _specularLighting, _phongLighting};
         _tmp = FindObjectOfType<Canvas>().GetComponentInChildren<TextMeshProUGUI>();
 
         UpdateShaders(GetCurrentShader());
