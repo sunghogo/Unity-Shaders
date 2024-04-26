@@ -30,8 +30,7 @@ Shader "Custom/ViewDirectionShading"
             o.Normal = normalize(UnpackNormal(tex2D(_normalMap, IN.uv_normalMap)).xyz);
         }
 
-        // Experimenting with fixed4 (11-bit precision)
-        fixed4 LightingViewDirection(SurfaceOutput s, half3 lightDir, half atten) {
+        half4 LightingViewDirection(SurfaceOutput s, half3 lightDir, half3 viewDir, half atten) {
             return half4(s.Albedo, s.Alpha);
         }
         ENDCG

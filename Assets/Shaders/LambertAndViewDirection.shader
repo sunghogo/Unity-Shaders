@@ -30,10 +30,9 @@ Shader "Custom/LambertAndViewDirection"
             o.Normal = normalize(UnpackNormal(tex2D(_normalMap, IN.uv_normalMap)).xyz);
         }
 
-        // Experimenting with fixed4 (11-bit precision)
-        fixed4 LightingLambertDiffusion(SurfaceOutput s, half3 lightDir, half atten) {
-            fixed4 diffuse = saturate(dot(normalize(lightDir), normalize(s.Normal)));
-            return fixed4(s.Albedo * diffuse * atten, s.Alpha);
+        half4 LightingLambertDiffusion(SurfaceOutput s, half3 lightDir, half atten) {
+            half diffuse = saturate(dot(normalize(lightDir), normalize(s.Normal)));
+            return half4(s.Albedo * diffuse * atten, s.Alpha);
         }
 
         ENDCG

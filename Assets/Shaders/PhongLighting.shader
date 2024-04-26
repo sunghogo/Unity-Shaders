@@ -34,9 +34,9 @@ Shader "Custom/PhongLighting"
             o.Normal = UnpackNormal(tex2D(_normalMap, IN.uv_normalMap));
         }
 
-        fixed4 LightingPhong(SurfaceOutput s, half3 lightDir, half atten) {
-            fixed diffuse = saturate(dot(normalize(s.Normal), normalize(lightDir)));
-            return fixed4(s.Albedo * diffuse * atten, s.Alpha);
+        half4 LightingPhong(SurfaceOutput s, half3 lightDir, half3 viewDir, half atten) {
+            half diffuse = saturate(dot(normalize(s.Normal), normalize(lightDir)));
+            return half4(s.Albedo * diffuse * atten, s.Alpha);
         }
         ENDCG
     }
