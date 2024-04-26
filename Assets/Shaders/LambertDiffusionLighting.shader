@@ -33,9 +33,11 @@ Shader "Custom/LambertDiffusionLighting"
 
         // Experimenting with fixed4 (11-bit precision)
         half4 LightingLambertDiffusion(SurfaceOutput s, half3 lightDir, half atten) {
-            half LdotN = saturate(dot(normalize(lightDir), normalize(s.Normal)));
-            half diffuse = LdotN;
-            return half4(s.Albedo * _ambientColor.rgb * diffuse * atten, s.Alpha);
+            half3 lightDirNorm = normalize(lightDir);
+            half LdotN = saturate(dot(lightDirNorm, s.Normal));
+            half3 diffuse = s.Albedo * _ambientColor * atten * LdotN;
+
+            return half4(diffuse, s.Alpha);
         }
 
         ENDCG

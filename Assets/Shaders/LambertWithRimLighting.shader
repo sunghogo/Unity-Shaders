@@ -34,17 +34,19 @@ Shader "Custom/LambertWithRimLighting"
             o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _modelColor.rgb;
             o.Alpha = tex2D(_diffuseMap, IN.uv_diffuseMap).a * _modelColor.a;
             o.Normal = normalize(UnpackNormal(tex2D(_normalMap, IN.uv_normalMap)).xyz);
-            
-            half NdotV = saturate(dot(normalize(o.Normal), normalize(IN.viewDir)));
-            half rim = 1 - NdotV;
-            o.Emission = _rimColor.rgb * pow(rim, _rimPower);
-
         }
 
-        half4 LightingLambertWithRim(SurfaceOutput s, half3 lightDir, half atten) {
-            half LdotN = saturate(dot(normalize(lightDir), normalize(s.Normal)));
-            half diffuse = LdotN;
-            return half4(s.Albedo * _ambientColor.rgb * diffuse * atten, s.Alpha);
+        half4 LightingLambertWithRim(SurfaceOutput s, half3 lightDir, half3 viewDir, half atten) {
+            half3 lightDirNorm = normalize(lightDir);
+            half LdotN = saturate(dot(lightDirNorm, s.Normal));
+            half3 diffuse = s.Albedo * _ambientColor * atten * LdotN;
+
+            half NdotV = saturate(dot(normalize(s.Normal), normalize(viewDir)));
+            half InvertedNdotV = 1 - NdotV;
+            half rimStrength = pow(InvertedNdotV, _rimPower);
+            half3 rim = _rimColor.rgb * atten * rimStrength;
+
+            return half4(diffuse + rim, s.Alpha);
         }
 
         ENDCG
