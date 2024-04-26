@@ -26,13 +26,13 @@ Shader "Custom/LambertDiffusionLighting"
         void surf(Input IN, inout SurfaceOutput o) {
             o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _color.rgb;
             o.Alpha = tex2D(_diffuseMap, IN.uv_diffuseMap).a * _color.a;
-            o.Normal = UnpackNormal(tex2D(_normalMap, IN.uv_normalMap));
+            o.Normal = normalize(UnpackNormal(tex2D(_normalMap, IN.uv_normalMap)).xyz);
         }
 
         // Experimenting with fixed4 (11-bit precision)
         fixed4 LightingLambertDiffusion(SurfaceOutput s, half3 lightDir, half atten) {
-            fixed lambert = saturate(dot(s.Normal, lightDir));
-            return fixed4(s.Albedo * lambert * atten, s.Alpha);
+            fixed diffuse = saturate(dot(normalize(s.Normal), normalize(lightDir)));
+            return fixed4(s.Albedo * diffuse * atten, s.Alpha);
         }
 
         ENDCG

@@ -2,7 +2,9 @@ Shader "Custom/PhongLighting"
 {
     Properties
     {
-       
+        _diffuseMap ("Texture", 2D) = "white" {}
+        _normalMap ("Normal", 2D) = "bump" {}
+        _color ("Color", Color) = (1, 1, 1, 1)
     }
     SubShader
     {
@@ -12,38 +14,29 @@ Shader "Custom/PhongLighting"
 
         CGPROGRAM
         // Physically based Standard lighting model, and enable shadows on all light types
-        #pragma surface surf Standard fullforwardshadows
-
-        // Use shader model 3.0 target, to get nicer looking lighting
-        #pragma target 3.0
-
-        sampler2D _MainTex;
+        #pragma surface surf Phong
 
         struct Input
         {
-            float2 uv_MainTex;
+            float2 uv_diffuseMap;
+            float2 uv_normalMap;
         };
 
-        half _Glossiness;
-        half _Metallic;
-        fixed4 _Color;
+        sampler2D _diffuseMap;
+        sampler2D _normalMap;
+        fixed4 _color;
 
-        // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
-        // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
-        // #pragma instancing_options assumeuniformscaling
-        UNITY_INSTANCING_BUFFER_START(Props)
-            // put more per-instance properties here
-        UNITY_INSTANCING_BUFFER_END(Props)
 
-        void surf (Input IN, inout SurfaceOutputStandard o)
+        void surf (Input IN, inout SurfaceOutput o)
         {
-            // Albedo comes from a texture tinted by color
-            fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
-            o.Albedo = c.rgb;
-            // Metallic and smoothness come from slider variables
-            o.Metallic = _Metallic;
-            o.Smoothness = _Glossiness;
-            o.Alpha = c.a;
+            o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _color.rgb;
+            o.Alpha = tex2D(_diffuseMap, IN.uv_diffuseMap).a * _color.a;
+            o.Normal = UnpackNormal(tex2D(_normalMap, IN.uv_normalMap));
+        }
+
+        fixed4 LightingPhong(SurfaceOutput s, half3 lightDir, half atten) {
+            fixed diffuse = saturate(dot(normalize(s.Normal), normalize(lightDir)));
+            return fixed4(s.Albedo * diffuse * atten, s.Alpha);
         }
         ENDCG
     }

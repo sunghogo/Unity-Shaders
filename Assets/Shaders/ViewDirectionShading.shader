@@ -12,7 +12,7 @@ Shader "Custom/ViewDirectionShading"
         }
 
         CGPROGRAM
-        #pragma surface surf NoLighting
+        #pragma surface surf ViewDirection
 
         struct Input {
             float2 uv_diffuseMap;
@@ -25,12 +25,13 @@ Shader "Custom/ViewDirectionShading"
         fixed4 _color;
         
         void surf(Input IN, inout SurfaceOutput o) {
-            o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _color.rgb * saturate(dot(normalize(IN.viewDir), o.Normal));
+            o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _color.rgb * saturate(dot(normalize(IN.viewDir), normalize(o.Normal)));
             o.Alpha = tex2D(_diffuseMap, IN.uv_diffuseMap).a * _color.a;
-            o.Normal = UnpackNormal(tex2D(_normalMap, IN.uv_normalMap));
+            o.Normal = normalize(UnpackNormal(tex2D(_normalMap, IN.uv_normalMap)).xyz);
         }
 
-        half4 LightingNoLighting(SurfaceOutput s, half3 lightDir, half atten) {
+        // Experimenting with fixed4 (11-bit precision)
+        fixed4 LightingViewDirection(SurfaceOutput s, half3 lightDir, half atten) {
             return half4(s.Albedo, s.Alpha);
         }
         ENDCG
