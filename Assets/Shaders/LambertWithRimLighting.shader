@@ -1,10 +1,12 @@
-Shader "Custom/LambertAndViewDirectionLighting"
+Shader "Custom/LambertWithRimLighting"
 {
     Properties {
         _diffuseMap ("Texture", 2D) = "white" {}
         _normalMap ("Normal", 2D) = "bump" {}
         _modelColor ("Model Color", Color) = (1, 1, 1, 1)
-        _ambientColor ("Ambient Color", Color) = (1, 1, 1, 1)
+        _ambientColor ("Ambient Color", Color) = (0, 0, 1, 1)
+        _rimPower ("Rim Power", Range(0,10)) = 1
+        _rimColor ("Rim Lighting Color", Color) = (1, 0, 0, 1)
     }
 
     SubShader {
@@ -13,7 +15,7 @@ Shader "Custom/LambertAndViewDirectionLighting"
         }
 
         CGPROGRAM
-        #pragma surface surf LambertView
+        #pragma surface surf LambertWithRim
 
         struct Input {
             float2 uv_diffuseMap;
@@ -25,17 +27,23 @@ Shader "Custom/LambertAndViewDirectionLighting"
         sampler2D _normalMap;
         fixed4 _modelColor;
         fixed4 _ambientColor;
+        half _rimPower;
+        fixed4 _rimColor;
 
         void surf(Input IN, inout SurfaceOutput o) {
             o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _modelColor.rgb;
             o.Alpha = tex2D(_diffuseMap, IN.uv_diffuseMap).a * _modelColor.a;
             o.Normal = normalize(UnpackNormal(tex2D(_normalMap, IN.uv_normalMap)).xyz);
+            
+            half NdotV = saturate(dot(normalize(o.Normal), normalize(IN.viewDir)));
+            half rim = 1 - NdotV;
+            o.Emission = _rimColor.rgb * pow(rim, _rimPower);
+
         }
 
-        half4 LightingLambertView(SurfaceOutput s, half3 lightDir, half3 viewDir, half atten) {
-            half NdotV = saturate(dot(normalize(s.Normal), normalize(viewDir)));
+        half4 LightingLambertWithRim(SurfaceOutput s, half3 lightDir, half atten) {
             half diffuse = saturate(dot(normalize(lightDir), normalize(s.Normal)));
-            return half4(s.Albedo * _ambientColor.rgb * NdotV * diffuse * atten, s.Alpha);
+            return half4(s.Albedo * _ambientColor.rgb * diffuse * atten, s.Alpha);
         }
 
         ENDCG

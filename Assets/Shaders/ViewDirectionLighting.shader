@@ -4,7 +4,7 @@ Shader "Custom/ViewDirectionLighting"
         _diffuseMap ("Texture", 2D) = "white" {}
         _normalMap ("Normal", 2D) = "bump" {}
         _modelColor ("Model Color", Color) = (1, 1, 1, 1)
-        _ambientColor ("Ambient Color", Color) = (1, 1, 1, 1)
+        _ambientColor ("Ambient Color", Color) = (0, 0, 1, 1)
     }
 
     SubShader {
