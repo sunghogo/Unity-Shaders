@@ -10,6 +10,7 @@ public class Shaders : MonoBehaviour
     [SerializeField] private Shader _lambertDiffusionLighting;
     [SerializeField] private Shader _lambertViewLighting;
     [SerializeField] private Shader _phongLighting;
+    [SerializeField] private Material _testMaterial;
 
     private TextMeshProUGUI _tmp;
 
@@ -43,11 +44,7 @@ public class Shaders : MonoBehaviour
     }
 
     private void UpdateChildShaders(Shader shader) {
-        foreach (var lod in _lodGroup.GetLODs()) {
-            foreach (var renderer in lod.renderers) {
-                renderer.material.shader = shader;
-            }
-        }
+        _testMaterial.shader = shader;
     }
 
     private Shader GetCurrentShader() {

@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Test Shader
-  m_Shader: {fileID: 4800000, guid: f1097139abe74c5418ac20de094df933, type: 3}
+  m_Shader: {fileID: 4800000, guid: 6e02e6f3006feaf4c8ebf8c98d06c013, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -101,5 +101,7 @@ Material:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _Color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ambientColor: {r: 1, g: 1, b: 1, a: 1}
     - _color: {r: 0, g: 0.6479211, b: 1, a: 1}
+    - _modelColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
