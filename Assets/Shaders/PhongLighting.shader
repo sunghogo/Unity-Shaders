@@ -46,9 +46,9 @@ Shader "Custom/PhongLighting"
             half LdotN = saturate(dot(lightDirNorm, s.Normal));
             half3 diffuse = s.Albedo * _ambientColor * atten * LdotN;
             
-            // Reflection vector: R = L - 2 * (dot(l, N)) x N where L is light vector reflecting off the surface
+            // Reflection vector: R = 2 * dot(L, N) * N - L, where L's direction is from surface to light source
             // Can opt for reflect(L, N) next time;
-            half3 reflection = -lightDirNorm - 2 * dot(-lightDirNorm, s.Normal) * s.Normal;
+            half3 reflection = 2 * dot(lightDirNorm, s.Normal) * s.Normal - lightDirNorm;
             half VdotR = saturate(dot(normalize(viewDir), reflection));
             half specularStrength = pow(VdotR, _specularPower);
             half3 specular = _specularColor * atten * specularStrength;
