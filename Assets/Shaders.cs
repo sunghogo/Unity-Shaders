@@ -10,8 +10,11 @@ public class Shaders : MonoBehaviour
     [SerializeField] private Shader _lambertDiffusionLighting;
     [SerializeField] private Shader _rimLighting;
     [SerializeField] private Shader _lambertWithRimLighting;
-    [SerializeField] private Shader _specularLighting;
+    [SerializeField] private Shader _phongSpecularReflection;
     [SerializeField] private Shader _phongLighting;
+    [SerializeField] private Shader _BlinnPhongSpecularReflection;
+    [SerializeField] private Shader _BlinnPhongLighting;
+
     [SerializeField] private Material _testMaterial;
 
     private TextMeshProUGUI _tmp;
@@ -21,7 +24,7 @@ public class Shaders : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _shaders = new Shader[7] {_noLighting, _ambientLighting, _lambertDiffusionLighting, _rimLighting, _lambertWithRimLighting, _specularLighting, _phongLighting};
+        _shaders = new Shader[9] {_noLighting, _ambientLighting, _lambertDiffusionLighting, _rimLighting, _lambertWithRimLighting, _phongSpecularReflection, _phongLighting, _BlinnPhongSpecularReflection, _BlinnPhongLighting};
         _tmp = FindObjectOfType<Canvas>().GetComponentInChildren<TextMeshProUGUI>();
 
         UpdateShaders(GetCurrentShader());
@@ -56,6 +59,8 @@ public class Shaders : MonoBehaviour
 
     private string ParseShaderName(string shaderName) {
         string shaderTitle = shaderName.Split('/').ElementAtOrDefault(1);
-        return shaderTitle?.SplitWords(' ') ?? shaderName;
+        shaderTitle = shaderTitle?.SplitWords(' ') ?? shaderName;
+        if (shaderTitle.Contains('-')) shaderTitle = shaderTitle.Substring(0, shaderTitle.IndexOf('-') + 1) + shaderTitle.Substring(shaderTitle.IndexOf('-') + 2, shaderTitle.Length - shaderTitle.IndexOf('-') - 2);
+        return shaderTitle;
     }
 }

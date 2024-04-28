@@ -1,4 +1,4 @@
-Shader "Custom/SpecularLighting"
+Shader "Custom/Blinn-PhongSpecularReflection"
 {
     Properties
     {
@@ -50,12 +50,12 @@ Shader "Custom/SpecularLighting"
 
             half4 diffuse = half4(s.Albedo * atten, s.Alpha);
 
-            // Reflection vector: R = 2 * dot(L, N) * N - L, where L's direction is from surface to light source
+            // Reflection vector: H = L + V
             // Can opt for reflect(L, N) next time;
             half3 lightDirNorm = normalize(lightDir);
-            half3 reflection = 2 * dot(lightDirNorm, s.Normal) * s.Normal - lightDirNorm;
-            half VdotR = saturate(dot(normalize(viewDir), reflection));
-            half specularStrength = pow(VdotR, _specularPower);
+            half3 reflection = normalize(lightDirNorm + normalize(viewDir));
+            half NdotH = saturate(dot(s.Normal, reflection));
+            half specularStrength = pow(NdotH, _specularPower);
             half4 specular = half4(_specularReflection * specularStrength * _specularIntensity.rgb * atten, _specularIntensity.a);
             
             return diffuse + ambient + specular;

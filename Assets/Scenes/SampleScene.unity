@@ -145,8 +145,10 @@ MonoBehaviour:
   _lambertDiffusionLighting: {fileID: 4800000, guid: f1097139abe74c5418ac20de094df933, type: 3}
   _rimLighting: {fileID: 4800000, guid: e314eb1f12926a44287f7edc56e989b4, type: 3}
   _lambertWithRimLighting: {fileID: 4800000, guid: 3c85ac77dbd06624a80fccb2f1f614b6, type: 3}
-  _specularLighting: {fileID: 4800000, guid: d9595b5eebdd77a4eadab761e5105eba, type: 3}
+  _phongSpecularReflection: {fileID: 4800000, guid: d9595b5eebdd77a4eadab761e5105eba, type: 3}
   _phongLighting: {fileID: 4800000, guid: 065216f3bce184c4aba12364606dbdfd, type: 3}
+  _BlinnPhongSpecularReflection: {fileID: 4800000, guid: 5cde64f9b2c6220438597cfb62e0f6e3, type: 3}
+  _BlinnPhongLighting: {fileID: 4800000, guid: 7c977bf26908aca48a9a8a90ce4bee9a, type: 3}
   _testMaterial: {fileID: 2100000, guid: 62c296ee593e5674e92e8ca9bb1ae96e, type: 2}
 --- !u!1 &705507993
 GameObject:
