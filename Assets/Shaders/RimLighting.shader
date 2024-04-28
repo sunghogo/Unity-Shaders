@@ -36,7 +36,7 @@ Shader "Custom/RimLighting"
         }
 
         half4 LightingNoLighting(SurfaceOutput s, half3 lightDir, half3 viewDir, half atten) {
-            half NdotV = saturate(dot(normalize(s.Normal), normalize(viewDir)));
+            half NdotV = saturate(dot(s.Normal, normalize(viewDir)));
             half InvertedNdotV = 1 - NdotV;
             half rimStrength = pow(InvertedNdotV, _rimPower);
             half3 rim = _rimColor.rgb * atten * rimStrength;

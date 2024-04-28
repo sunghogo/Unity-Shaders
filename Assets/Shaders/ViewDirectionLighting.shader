@@ -33,7 +33,7 @@ Shader "Custom/ViewDirectionLighting"
         }
 
         half4 LightingViewDirection(SurfaceOutput s, half3 lightDir, half3 viewDir, half atten) {
-            half NdotV = saturate(dot(normalize(s.Normal), normalize(viewDir)));
+            half NdotV = saturate(dot(s.Normal, normalize(viewDir)));
             return half4(s.Albedo * _ambientColor.rgb * NdotV * atten, s.Alpha);
         }
         ENDCG

@@ -41,7 +41,7 @@ Shader "Custom/LambertWithRimLighting"
             half LdotN = saturate(dot(lightDirNorm, s.Normal));
             half3 diffuse = s.Albedo * _ambientColor * atten * LdotN;
 
-            half NdotV = saturate(dot(normalize(s.Normal), normalize(viewDir)));
+            half NdotV = saturate(dot(s.Normal, normalize(viewDir)));
             half InvertedNdotV = 1 - NdotV;
             half rimStrength = pow(InvertedNdotV, _rimPower);
             half3 rim = _rimColor.rgb * atten * rimStrength;
