@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Test Shader
-  m_Shader: {fileID: 4800000, guid: 3c85ac77dbd06624a80fccb2f1f614b6, type: 3}
+  m_Shader: {fileID: 4800000, guid: 065216f3bce184c4aba12364606dbdfd, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -96,16 +96,25 @@ Material:
     - _UVSec: 0
     - _UseUIAlphaClip: 0
     - _ZWrite: 1
+    - _ambientReflection: 1
     - _bump: 1
-    - _rimPower: 1
+    - _diffuseReflection: 1
+    - _rimPower: 5
+    - _rimReflection: 1
     - _specularPower: 48
+    - _specularReflection: 1
     m_Colors:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _Color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _ambientColor: {r: 0, g: 0.17145586, b: 1, a: 1}
+    - _ambientIntensity: {r: 1, g: 0, b: 0, a: 1}
     - _color: {r: 0, g: 0.6479211, b: 1, a: 1}
+    - _diffuseIntensity: {r: 0, g: 0, b: 1, a: 1}
+    - _materialColor: {r: 0.4764151, g: 0.4764151, b: 0.4764151, a: 0.003921569}
     - _modelColor: {r: 1, g: 1, b: 1, a: 1}
     - _rimColor: {r: 1, g: 0, b: 0, a: 1}
+    - _rimIntensity: {r: 0, g: 1, b: 0, a: 1}
     - _specularColor: {r: 1, g: 0, b: 0, a: 1}
+    - _specularIntensity: {r: 0, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
