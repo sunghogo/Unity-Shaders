@@ -29,15 +29,18 @@ Shader "Custom/Ambient"
 
         void surf(Input IN, inout SurfaceOutput o) {
             half4 diffuseColor = tex2D(_diffuseMap, IN.uv_diffuseMap);
-            o.Albedo = diffuseColor.rgb;
-            o.Alpha = diffuseColor.a;
+            o.Albedo = diffuseColor.rgb * _materialColor.rgb;
+            o.Alpha = diffuseColor.a * _materialColor.a;
             o.Normal = normalize(UnpackNormal(tex2D(_normalMap, IN.uv_normalMap)).xyz);
         }
 
         // Experimenting with fixed4 (11-bit precision)
         half4 LightingAmbientDiffusion(SurfaceOutput s, half3 lightDir, half atten) {
-            half4 ambientIllumination = _ambientReflection * _ambientIntensity * atten;
-            return ambientIllumination;
+            half4 ambient = half4(_ambientReflection * _ambientIntensity.rgb * atten, _ambientIntensity.a);
+
+            half4 diffuse = half4(s.Albedo * atten, s.Alpha);
+
+            return diffuse + ambient;
         }
 
         ENDCG

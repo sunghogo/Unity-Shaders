@@ -30,15 +30,18 @@ Shader "Custom/ViewDirectionLighting"
         
         void surf(Input IN, inout SurfaceOutput o) {
             half4 diffuseColor = tex2D(_diffuseMap, IN.uv_diffuseMap);
-            o.Albedo = diffuseColor.rgb;
-            o.Alpha = diffuseColor.a;
+            o.Albedo = diffuseColor.rgb * _materialColor.rgb;
+            o.Alpha = diffuseColor.a * _materialColor.a;
             o.Normal = normalize(UnpackNormal(tex2D(_normalMap, IN.uv_normalMap)).xyz);
         }
 
         half4 LightingViewDirection(SurfaceOutput s, half3 lightDir, half3 viewDir, half atten) {
-            half4 ambientIllumination = _ambientReflection * _ambientIntensity * atten;
-            half NdotV = saturate(dot(s.Normal, normalize(viewDir))) * atten;
-            return ambientIllumination + NdotV;
+            half4 ambient = half4(_ambientReflection * _ambientIntensity.rgb * atten, _ambientIntensity.a);
+
+            half NdotV = saturate(dot(s.Normal, normalize(viewDir)));
+            half4 diffuse = half4(s.Albedo * NdotV * atten, s.Alpha);
+
+            return diffuse + ambient;
         }
         ENDCG
     }

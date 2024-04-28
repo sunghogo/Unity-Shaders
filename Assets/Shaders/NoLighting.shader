@@ -25,13 +25,14 @@ Shader "Custom/NoLighting"
         
         void surf(Input IN, inout SurfaceOutput o) {
             half4 diffuseColor = tex2D(_diffuseMap, IN.uv_diffuseMap);
-            o.Albedo = diffuseColor.rgb;
-            o.Alpha = diffuseColor.a;
+            o.Albedo = diffuseColor.rgb * _materialColor.rgb;
+            o.Alpha = diffuseColor.a * _materialColor.a;
             o.Normal = normalize(UnpackNormal(tex2D(_normalMap, IN.uv_normalMap)).xyz);
         }
 
         half4 LightingNoLighting(SurfaceOutput s, half3 lightDir, half atten) {
-            return half4(s.Albedo, s.Alpha);
+            half4 diffuse = half4(s.Albedo, s.Alpha);
+            return diffuse;
         }
         ENDCG
     }
