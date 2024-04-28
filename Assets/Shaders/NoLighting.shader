@@ -3,7 +3,7 @@ Shader "Custom/NoLighting"
     Properties {
         _diffuseMap ("Texture", 2D) = "white" {}
         _normalMap ("Normal", 2D) = "bump" {}
-        _modelColor ("Model Color", Color) = (1, 1, 1, 1)
+        _materialColor ("Material Color", Color) = (1, 1, 1, 1)
     }
 
     SubShader {
@@ -21,11 +21,12 @@ Shader "Custom/NoLighting"
 
         sampler2D _diffuseMap;
         sampler2D _normalMap;
-        fixed4 _modelColor;
+        fixed4 _materialColor;
         
         void surf(Input IN, inout SurfaceOutput o) {
-            o.Albedo = tex2D(_diffuseMap, IN.uv_diffuseMap).rgb * _modelColor.rgb;
-            o.Alpha = tex2D(_diffuseMap, IN.uv_diffuseMap).a * _modelColor.a;
+            half4 diffuseColor = tex2D(_diffuseMap, IN.uv_diffuseMap);
+            o.Albedo = diffuseColor.rgb;
+            o.Alpha = diffuseColor.a;
             o.Normal = normalize(UnpackNormal(tex2D(_normalMap, IN.uv_normalMap)).xyz);
         }
 
