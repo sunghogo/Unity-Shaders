@@ -3,11 +3,11 @@ Shader "Custom/RimLighting"
     Properties {
         _diffuseMap ("Texture", 2D) = "white" {}
         _normalMap ("Normal", 2D) = "bump" {}
-        _materialColor ("Material Color", Color) = (0, 0, 0, 1)
+        _materialColor ("Material Color", Color) = (0.5, 0.5, 0.5, 1)
         _ambientIntensity ("Ambient Light Color", Color) = (0, 0, 1, 1)
         _ambientReflection ("Ambient Reflection Constant", Range(0, 1)) = 1
         _rimIntensity ("Rim Light Color", Color) = (0, 1, 0, 1)
-        _rimReflection ("Rim Reflection Constant", Range(0, 1)) = 5
+        _rimReflection ("Rim Reflection Constant", Range(0, 1)) = 3
         _rimPower ("Rim Power", Range(0,10)) = 1
     }
 

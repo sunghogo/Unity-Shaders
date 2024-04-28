@@ -3,7 +3,7 @@ Shader "Custom/NoLighting"
     Properties {
         _diffuseMap ("Texture", 2D) = "white" {}
         _normalMap ("Normal", 2D) = "bump" {}
-        _materialColor ("Material Color", Color) = (1, 1, 1, 1)
+        _materialColor ("Material Color", Color) = (0.5, 0.5, 0.5, 1)
     }
 
     SubShader {

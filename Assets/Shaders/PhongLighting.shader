@@ -4,7 +4,7 @@ Shader "Custom/PhongLighting"
     {
         _diffuseMap ("Texture", 2D) = "white" {}
         _normalMap ("Normal", 2D) = "bump" {}
-        _materialColor ("Material Color", Color) = (0, 0, 0, 1)
+        _materialColor ("Material Color", Color) = (0.5, 0.5, 0.5, 1)
         _ambientIntensity ("Ambient Light Color", Color) = (0, 0, 1, 1)
         _ambientReflection ("Ambient Reflection Constant", Range(0, 1)) = 1
         _diffuseIntensity ("Diffuse Light Color", Color) = (0, 0, 1, 1)
