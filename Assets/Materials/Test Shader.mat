@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Test Shader
-  m_Shader: {fileID: 4800000, guid: 5cde64f9b2c6220438597cfb62e0f6e3, type: 3}
+  m_Shader: {fileID: 4800000, guid: 7c977bf26908aca48a9a8a90ce4bee9a, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -111,7 +111,7 @@ Material:
     - _ambientIntensity: {r: 1, g: 0, b: 0, a: 1}
     - _color: {r: 0, g: 0.6479211, b: 1, a: 1}
     - _diffuseIntensity: {r: 0, g: 0, b: 1, a: 1}
-    - _materialColor: {r: 0.4764151, g: 0.4764151, b: 0.4764151, a: 0.003921569}
+    - _materialColor: {r: 0.49803922, g: 0.49803922, b: 0.49803922, a: 0.003921569}
     - _modelColor: {r: 1, g: 1, b: 1, a: 1}
     - _rimColor: {r: 1, g: 0, b: 0, a: 1}
     - _rimIntensity: {r: 0, g: 1, b: 0, a: 1}
