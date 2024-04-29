@@ -4,14 +4,15 @@ using UnityEngine.EventSystems;
 
 public class ColorPicker : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] private Color _pickedColor;
+    [SerializeField] private Color _currentColor = new Color(1, 1, 1, 1);
     private RawImage _rawImage;
+    private PropertyBox _propertyBox;
     
     // Start is called before the first frame update
     void Start()
     {
         _rawImage = GetComponent<RawImage>();
-
+        _propertyBox = FindObjectOfType<PropertyBox>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -21,16 +22,14 @@ public class ColorPicker : MonoBehaviour, IPointerClickHandler
         if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_rawImage.rectTransform, eventData.position, eventData.pressEventCamera, out localCursor))
             return;
 
-        Debug.Log(localCursor);
         // Normalize the coordinates
         Rect rect = _rawImage.rectTransform.rect;
         Vector2 normalizedPoint = Rect.PointToNormalized(rect, localCursor);
 
         // Get color from the shader using the UV coordinates
-        Color color = GetColorFromUV(normalizedPoint);
+        _currentColor = GetColorFromUV(normalizedPoint);
         
-        _pickedColor = color;
-        Debug.Log("Picked Color: " + color);
+        _propertyBox.ChangeColor(_currentColor);
     }
 
     private Color GetColorFromUV(Vector2 uv)
@@ -39,8 +38,8 @@ public class ColorPicker : MonoBehaviour, IPointerClickHandler
         if (tex != null)
         {
             Color color = tex.GetPixelBilinear(uv.x, uv.y);
-            return color;
+            return (color.a == 0) ? _currentColor : color;
         }
-        return Color.black;
+        return _currentColor;
     }
 }

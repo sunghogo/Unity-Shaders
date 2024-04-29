@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 9126910518240838009}
   - component: {fileID: 4944083269625160819}
   - component: {fileID: 4975960626135627330}
+  - component: {fileID: 323049280554792828}
+  - component: {fileID: 312330245277994029}
   m_Layer: 5
   m_Name: Color Wheel
   m_TagString: Untagged
@@ -72,3 +74,28 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &323049280554792828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8266300268607642096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 941bcc1cfde57034a9e78726d3722318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pickedColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &312330245277994029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8266300268607642096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d0051fd0990d6f4992d5e0266888216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
