@@ -35,22 +35,22 @@ Shader "Custom/ColorWheel"
             };
 
             // Function to convert HSV to RGB
-            half3 hsv2rgb(half3 hsv)
+            float3 hsv2rgb(float3 hsv)
             {
-                half h = hsv.x;
-                half s = hsv.y;
-                half v = hsv.z;
+                float h = hsv.x;
+                float s = hsv.y;
+                float v = hsv.z;
 
-                half p = v * (1 - s);
-                half q = v * (1 - s * (h * 6 - floor(h * 6)));
-                half t = v * (1 - s * (1 - (h * 6 - floor(h * 6))));
+                float p = v * (1 - s);
+                float q = v * (1 - s * (h * 6 - floor(h * 6)));
+                float t = v * (1 - s * (1 - (h * 6 - floor(h * 6))));
 
-                if (h < 1.0 / 6) return half3(v, t, p);
-                if (h < 2.0 / 6) return half3(q, v, p);
-                if (h < 3.0 / 6) return half3(p, v, t);
-                if (h < 4.0 / 6) return half3(p, q, v);
-                if (h < 5.0 / 6) return half3(t, p, v);
-                return half3(v, p, q);
+                if (h < 1.0 / 6) return float3(v, t, p);
+                if (h < 2.0 / 6) return float3(q, v, p);
+                if (h < 3.0 / 6) return float3(p, v, t);
+                if (h < 4.0 / 6) return float3(p, q, v);
+                if (h < 5.0 / 6) return float3(t, p, v);
+                return float3(v, p, q);
             }
 
             v2f vert (appdata v)
@@ -61,26 +61,26 @@ Shader "Custom/ColorWheel"
                 return o;
             }
 
-            half4 frag (v2f i) : SV_Target
+            float4 frag (v2f i) : SV_Target
             {
                 // Calculate distance from center
                 float radius = length(i.uv - 0.5);
 
                 // Return transparent if outside specified radii
-                if (radius < _innerRadius || _outerRadius < radius )
+                if (radius <= _innerRadius || _outerRadius <= radius )
                 {
-                    return half4(0, 0, 0, 0);
+                    return float4(0, 0, 0, 0);
                 }
 
                 // Calculate angle for hue
                 float angle = atan2(i.uv.y - 0.5, i.uv.x - 0.5);
-                if (angle < 0) angle += 2 * 3.14159265359;
-                float hue = angle / (2 * 3.14159265359);
-
+                if (angle < 0) angle += 2 * UNITY_PI;
+                float hue = angle / (2 * UNITY_PI);
+            
                 // Convert hue to RGB using hsv2rgb function
-                half3 color = hsv2rgb(half3(hue, 1, 1));
+                float3 color = hsv2rgb(float3(hue, 1, 1));
 
-                return half4(color, 1.0);
+                return float4(color, 1.0);
             }
 
             ENDCG
