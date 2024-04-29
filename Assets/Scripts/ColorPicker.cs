@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class ColorPicker : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] private Color _currentColor = new Color(1, 1, 1, 1);
+    [SerializeField] private Color _currentColor;
     private RawImage _rawImage;
     private PropertyBox _propertyBox;
     
@@ -13,14 +14,15 @@ public class ColorPicker : MonoBehaviour, IPointerClickHandler
     {
         _rawImage = GetComponent<RawImage>();
         _propertyBox = FindObjectOfType<PropertyBox>();
+
+        _currentColor =  new Color(1, 1, 1, 1);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         // Convert click position to UV coordinates
         Vector2 localCursor;
-        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_rawImage.rectTransform, eventData.position, eventData.pressEventCamera, out localCursor))
-            return;
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_rawImage.rectTransform, eventData.position, eventData.pressEventCamera, out localCursor)) return;   
 
         // Normalize the coordinates
         Rect rect = _rawImage.rectTransform.rect;

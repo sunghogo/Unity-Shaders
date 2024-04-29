@@ -15,6 +15,7 @@ public class ColorBox : MonoBehaviour
     void Start()
     {
         _rawImage = GetComponent<RawImage>();
+        Color = new Color(1, 1, 1, 1);
     }
 
     public void ChangeColor(Color newColor) {
