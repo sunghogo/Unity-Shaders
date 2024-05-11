@@ -14,8 +14,7 @@ public class Shaders : MonoBehaviour
     [SerializeField] private Shader _phongLighting;
     [SerializeField] private Shader _BlinnPhongSpecularReflection;
     [SerializeField] private Shader _BlinnPhongLighting;
-
-    [SerializeField] private Material _testMaterial;
+    [SerializeField] public Material TestMaterial;
 
     private TextMeshProUGUI _tmp;
     private Shader[] _shaders;
@@ -46,10 +45,10 @@ public class Shaders : MonoBehaviour
     }
 
     private void UpdateShaders(Shader shader) {
-        _testMaterial.shader = shader;
+        TestMaterial.shader = shader;
     }
 
-    private Shader GetCurrentShader() {
+    public Shader GetCurrentShader() {
         return _shaders[_shadersIndex];
     }
 

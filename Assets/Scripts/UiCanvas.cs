@@ -1,22 +1,44 @@
 using UnityEngine;
+using TMPro;
 
 public class UiCanvas : MonoBehaviour
 
 {
+    public Shaders Shaders;
+    public TextMeshProUGUI ShaderTitle;
     private PropertyBox[] _propertyBoxes;
 
     // Start is called before the first frame update
     void Start()
     {
+        Shaders = FindObjectOfType<Shaders>();
+        ShaderTitle = GetComponentInChildren<TextMeshProUGUI>();
+
+        UpdatePropertyBoxes();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        GeneratePropertyBoxes();
+        UpdateCascadingPropertyBoxes();
+    }
+
+    private void GeneratePropertyBoxes() {
+        foreach (var name in Shaders.TestMaterial.GetPropertyNames(MaterialPropertyType.Vector)) {
+            Debug.Log(name);
+        };
+
+    }
+
+    private void UpdatePropertyBoxes() {
         _propertyBoxes = GetComponentsInChildren<PropertyBox>();
         foreach (var box in _propertyBoxes) {
                 Debug.Log(box.gameObject.name);
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    private void UpdateCascadingPropertyBoxes() {
         for (int i = 0; i < _propertyBoxes.Length; i++) {
             var initialBox = _propertyBoxes[i];
             if (initialBox.Opened && !initialBox.Adjusted) {

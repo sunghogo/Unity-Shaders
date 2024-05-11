@@ -1,11 +1,9 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
 public class PropertyBox : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] private Shaders _shaders;
     private OpenPanel _openPanel;
     private ClosedPanel _closedPanel;
     private TextMeshProUGUI _propertyTmp;
@@ -19,7 +17,6 @@ public class PropertyBox : MonoBehaviour, IPointerClickHandler
     // Start is called before the first frame update
     void Start()
     {
-        _shaders = FindObjectOfType<Shaders>();
         _openPanel = GetComponentInChildren<OpenPanel>();
         _closedPanel = GetComponentInChildren<ClosedPanel>();
         _propertyTmp = GetComponentInChildren<TextMeshProUGUI>();
