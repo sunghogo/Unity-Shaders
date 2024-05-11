@@ -25,6 +25,7 @@ public class PropertyBox : MonoBehaviour, IPointerClickHandler
         
         _colorWheelPanel.Close();
         _openPanel.Close();
+        Debug.Log(GetComponent<RectTransform>().position);
     }
 
     public void OnPointerClick(PointerEventData eventData)
