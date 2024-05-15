@@ -10,6 +10,8 @@ public class PropertyBox : MonoBehaviour, IPointerClickHandler
     private TextMeshProUGUI _colorTmp;
     private TextMeshProUGUI _sliderOneTmp;
     private TextMeshProUGUI _sliderTwoTmp;
+    private ColorBox _colorBox;
+    private ColorWheelPanel _colorWheelPanel;
 
     public string PropertyTitleText {
         get {return _propertyTmp.text;}
@@ -31,13 +33,10 @@ public class PropertyBox : MonoBehaviour, IPointerClickHandler
         set {_sliderTwoTmp.text = value;}
     }
 
-    private ColorBox _colorBox;
-    private ColorWheelPanel _colorWheelPanel;
-
     public float OpenedHeight;
-    public float ClosedHeight = 35;
-    public bool Opened = false;
-    public bool Adjusted = false;
+    public float ClosedHeight;
+    public bool Opened;
+    public bool Adjusted;
 
     // Need Awake to make sure properties are properly initialized
     void Awake()
@@ -65,7 +64,12 @@ public class PropertyBox : MonoBehaviour, IPointerClickHandler
 
         _colorBox = GetComponentInChildren<ColorBox>();
         _colorWheelPanel = GetComponentInChildren<ColorWheelPanel>();
+        
+        // Initialize fields here as Awake() predates top-level initialization
         OpenedHeight = GetOpenedHeight();
+        ClosedHeight = 35;
+        Opened = false;
+        Adjusted = false;
 
         _colorWheelPanel.Close(); // Need to cache and close here to properly reference it for clicker event
         Close();
