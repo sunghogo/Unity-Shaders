@@ -13,7 +13,7 @@ public class ColorPicker : MonoBehaviour, IPointerClickHandler
     void Start()
     {
         _rawImage = GetComponent<RawImage>();
-        _propertyBox = FindObjectOfType<PropertyBox>();
+        _propertyBox = GetComponentInParent<PropertyBox>();
 
         _currentColor =  new Color(1, 1, 1, 1);
     }

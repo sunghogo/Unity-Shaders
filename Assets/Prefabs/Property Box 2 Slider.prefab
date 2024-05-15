@@ -1255,7 +1255,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5321e13e041904cba6a1250f706267, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shaders: {fileID: 0}
   OpenedHeight: 0
   ClosedHeight: 35
   Opened: 0
@@ -1770,14 +1769,6 @@ PrefabInstance:
     - target: {fileID: 9126910518240838009, guid: 71a3cee571d92ec4db522c72d831f7af, type: 3}
       propertyPath: m_SizeDelta.y
       value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 9126910518240838009, guid: 71a3cee571d92ec4db522c72d831f7af, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.8000001
-      objectReference: {fileID: 0}
-    - target: {fileID: 9126910518240838009, guid: 71a3cee571d92ec4db522c72d831f7af, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 9126910518240838009, guid: 71a3cee571d92ec4db522c72d831f7af, type: 3}
       propertyPath: m_LocalPosition.x
