@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CameraRotation : MonoBehaviour
 {
-    [SerializeField] [Range(1, 50)] private float _cameraDistance = 10f;
+    [SerializeField] [Range(1, 50)] private float _cameraDistance = 3f;
     [SerializeField] [Range(-25, 25)] private  float _cameraHeight = 0.6f;
     [SerializeField] [Range(25, 100)] private  float _cameraRotationSpeed = 50f;
     [SerializeField] [Range(25, 100)] private  float _cameraZoomSpeed = 25f;

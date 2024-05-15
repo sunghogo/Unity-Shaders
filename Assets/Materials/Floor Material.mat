@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Test Shader Material
-  m_Shader: {fileID: 4800000, guid: 065216f3bce184c4aba12364606dbdfd, type: 3}
+  m_Name: Floor Material
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -44,8 +44,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 984b984675252b64f98b6262ebffe02e, type: 3}
-        m_Scale: {x: 50, y: 50}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -59,62 +59,25 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _diffuseMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _mainTex:
-        m_Texture: {fileID: 2800000, guid: 984b984675252b64f98b6262ebffe02e, type: 3}
-        m_Scale: {x: 0, y: 0}
-        m_Offset: {x: 0, y: 0}
-    - _normalMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BumpScale: 1
-    - _ColorMask: 15
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0.5
+    - _Glossiness: 1
     - _GlossyReflections: 1
-    - _Metallic: 0
+    - _Metallic: 0.5
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
     - _UVSec: 0
-    - _UseUIAlphaClip: 0
     - _ZWrite: 1
-    - _ambientReflection: 0.061
-    - _bump: 1
-    - _diffuseReflection: 1
-    - _rimPower: 5
-    - _rimReflection: 1
-    - _specularPower: 48
-    - _specularReflection: 1
     m_Colors:
-    - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
-    - _Color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ambientColor: {r: 0, g: 0.17145586, b: 1, a: 1}
-    - _ambientIntensity: {r: 1, g: 1, b: 1, a: 0}
-    - _color: {r: 0, g: 0.6479211, b: 1, a: 1}
-    - _diffuseIntensity: {r: 0, g: 0.7444453, b: 1, a: 1}
-    - _materialColor: {r: 0.6839622, g: 0.6839622, b: 0.6839622, a: 0.003921569}
-    - _modelColor: {r: 1, g: 1, b: 1, a: 1}
-    - _rimColor: {r: 1, g: 0, b: 0, a: 1}
-    - _rimIntensity: {r: 0.9970012, g: 1, b: 0, a: 1}
-    - _specularColor: {r: 1, g: 0, b: 0, a: 1}
-    - _specularIntensity: {r: 0.98729753, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
