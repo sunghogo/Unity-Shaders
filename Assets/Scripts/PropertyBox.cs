@@ -113,6 +113,12 @@ public class PropertyBox : MonoBehaviour, IPointerClickHandler
 
     private float GetOpenedHeight() {
         var openPanelHeight = GetComponentInChildren<OpenPanel>().GetComponent<RectTransform>().rect.height;
-        return openPanelHeight > 100 ? openPanelHeight + 10 : openPanelHeight;
+        if (_sliderOneTmp is null && _sliderOneTmp is null) {
+            return openPanelHeight - 10;
+        } else if (_sliderOneTmp is not null && _sliderTwoTmp is null) {
+            return openPanelHeight;
+        } else {
+            return openPanelHeight + 10;
+        }
     }
 }
