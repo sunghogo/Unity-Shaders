@@ -16,7 +16,9 @@ public class Shaders : MonoBehaviour
     [SerializeField] private Shader _BlinnPhongLighting;
     [SerializeField] public Material TestMaterial;
 
-    private TextMeshProUGUI _tmp;
+    private Canvas _canvas;
+    private UiCanvas _uiCanvas;
+    private TextMeshProUGUI _shaderTitleTmp;
     private Shader[] _shaders;
     private int _shadersIndex = 0;
 
@@ -24,7 +26,9 @@ public class Shaders : MonoBehaviour
     void Start()
     {
         _shaders = new Shader[9] {_noLighting, _ambientLighting, _lambertDiffusionLighting, _rimLighting, _lambertWithRimLighting, _phongSpecularReflection, _phongLighting, _BlinnPhongSpecularReflection, _BlinnPhongLighting};
-        _tmp = FindObjectOfType<Canvas>().GetComponentInChildren<TextMeshProUGUI>();
+        _canvas = FindObjectOfType<Canvas>();
+        _uiCanvas = _canvas.GetComponent<UiCanvas>();
+        _shaderTitleTmp = _canvas.GetComponentInChildren<TextMeshProUGUI>();
 
         UpdateShaders(GetCurrentShader());
         UpdateText();
@@ -36,6 +40,7 @@ public class Shaders : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) {
             CycleShaders();
             UpdateText();
+            _uiCanvas.ShadersChanged();
         }
     }
 
@@ -53,7 +58,7 @@ public class Shaders : MonoBehaviour
     }
 
     private void UpdateText() {
-        _tmp.text = $"{ParseShaderName(_shaders[_shadersIndex].name)}";
+        _shaderTitleTmp.text = $"{ParseShaderName(_shaders[_shadersIndex].name)}";
     }
 
     private string ParseShaderName(string shaderName) {

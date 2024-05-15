@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Test Shader Material
-  m_Shader: {fileID: 4800000, guid: 5acd57c3b5c96844dae0e24b1e9a73d4, type: 3}
+  m_Shader: {fileID: 4800000, guid: f1097139abe74c5418ac20de094df933, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -96,7 +96,7 @@ Material:
     - _UVSec: 0
     - _UseUIAlphaClip: 0
     - _ZWrite: 1
-    - _ambientReflection: 0
+    - _ambientReflection: 0.061
     - _bump: 1
     - _diffuseReflection: 1
     - _rimPower: 5
