@@ -39,17 +39,19 @@ public class UiCanvas : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        UpdateCascadingPropertyBoxes();
+        DropDownCascadePropertyBoxes();
     }
 
     public void UpdateUI() {
         UpdateShaderTitle();
-        CloseCascadingPropertyBoxes();
-        UpdateCascadingPropertyBoxes();
+        CloseAllPropertyBoxes();
+        DropDownCascadePropertyBoxes();
         DeactivatePropertyBoxes();
         ResetBoxPositions();
         GeneratePropertyBoxes();
         UpdatePropertyBoxes();
+        ReopenAllPropertyBoxes();
+        DropDownCascadePropertyBoxes();
     }
 
     private void GeneratePropertyBoxes() {
@@ -161,11 +163,23 @@ public class UiCanvas : MonoBehaviour
         _propertyBoxPosition = _initialPropertyBoxPosition;
     }
 
-    private void CloseCascadingPropertyBoxes() {
-        for (int i = 0; i < _propertyBoxesList.Count; i++) _propertyBoxesList[i].Close();
+    private void CloseAllPropertyBoxes() {
+        for (int i = 0; i < _propertyBoxesList.Count; i++) {
+            var box = _propertyBoxesList[i];
+            if (box.gameObject.activeSelf) box.PreviouslyOpened = box.Opened;
+            box.Close();
+       }
     }
 
-    private void UpdateCascadingPropertyBoxes() {
+    private void ReopenAllPropertyBoxes() {
+        for (int i = 0; i < _propertyBoxesList.Count; i++) {
+            var box = _propertyBoxesList[i];
+            if (box.gameObject.activeSelf && box.PreviouslyOpened) box.Open();
+       }
+    }
+
+    // Drop down cascading only works when all property boxes are initially closed due to hard position resets when cycling shaders
+    private void DropDownCascadePropertyBoxes() {
         for (int i = 0; i < _propertyBoxesList.Count; i++) {
             var initialBox = _propertyBoxesList[i];
             if (initialBox.Opened && !initialBox.Adjusted) {

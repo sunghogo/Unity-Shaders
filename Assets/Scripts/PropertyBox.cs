@@ -36,6 +36,7 @@ public class PropertyBox : MonoBehaviour, IPointerClickHandler
     public float OpenedHeight;
     public float ClosedHeight;
     public bool Opened;
+    public bool PreviouslyOpened;
     public bool Adjusted;
 
     // Need Awake to make sure properties are properly initialized upon dynamic instantiation
@@ -69,6 +70,7 @@ public class PropertyBox : MonoBehaviour, IPointerClickHandler
         OpenedHeight = GetOpenedHeight();
         ClosedHeight = 35;
         Opened = false;
+        PreviouslyOpened = false;
         Adjusted = false;
 
         _colorWheelPanel.Close(); // Need to cache and close here to properly reference it for clicker event
