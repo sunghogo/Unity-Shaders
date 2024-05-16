@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using Unity.VisualScripting;
 
 public class PropertyBox : MonoBehaviour, IPointerClickHandler
 {
@@ -113,6 +114,14 @@ public class PropertyBox : MonoBehaviour, IPointerClickHandler
         Opened = !Opened;
         _closedPanel.Toggle();
         _openPanel.Toggle();
+    }
+
+    public void Inactivate() {
+        gameObject.SetActive(false);
+    }
+
+    public void Activate() {
+        gameObject.SetActive(true);
     }
 
     private float GetOpenedHeight() {
