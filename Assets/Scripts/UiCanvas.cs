@@ -15,7 +15,7 @@ public class UiCanvas : MonoBehaviour
     private Dictionary<string, PropertyBox> _propertyBoxes;
     private List<PropertyBox> _propertyBoxesList;
     private Vector3 _initialPropertyBoxPosition;
-    [SerializeField] private Vector3 _propertyBoxPosition;
+    private Vector3 _propertyBoxPosition;
     private Vector3 _propertyBoxOffset;
 
     void Start()
@@ -60,19 +60,19 @@ public class UiCanvas : MonoBehaviour
                 
                 switch (name) {
                     case "_materialColor":
-                        box = GeneratePropertyBox(0, propertyTitle, _propertyBoxPosition);
+                        box = GeneratePropertyBox(0, propertyTitle);
                         break;
                     case "_ambientIntensity":
-                        box = GeneratePropertyBox(0, propertyTitle, _propertyBoxPosition);
+                        box = GeneratePropertyBox(1, propertyTitle);
                         break;
                     case "_diffuseIntensity":
-                        box = GeneratePropertyBox(0, propertyTitle, _propertyBoxPosition);
+                        box = GeneratePropertyBox(1, propertyTitle);
                         break;
                     case "_rimIntensity":
-                        box = GeneratePropertyBox(0, propertyTitle, _propertyBoxPosition);
+                        box = GeneratePropertyBox(2, propertyTitle);
                         break;
                     case "_specularIntensity":
-                        box = GeneratePropertyBox(0, propertyTitle, _propertyBoxPosition);
+                        box = GeneratePropertyBox(2, propertyTitle);
                         break;
                 }
 
@@ -111,7 +111,7 @@ public class UiCanvas : MonoBehaviour
         return char.ToUpper(splitText[0]) + splitText.Substring(1);
     }
 
-    private PropertyBox GeneratePropertyBox(int numSliders, string propertyTitle, Vector3 position) {
+    private PropertyBox GeneratePropertyBox(int numSliders, string propertyTitle) {
         GameObject instance;
         switch (numSliders) {
             case 0:
@@ -133,7 +133,7 @@ public class UiCanvas : MonoBehaviour
         var rectTransform = instance.GetComponent<RectTransform>();
         rectTransform.anchorMin = new Vector2(0, 1);
         rectTransform.anchorMax = new Vector2(0, 1);
-        rectTransform.anchoredPosition3D = position;
+        rectTransform.anchoredPosition3D = _propertyBoxPosition;
 
         PropertyBox propertyBox = instance.GetComponent<PropertyBox>();
         propertyBox.PropertyTitleText = propertyTitle;
