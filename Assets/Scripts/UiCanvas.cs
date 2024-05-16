@@ -41,19 +41,19 @@ public class UiCanvas : MonoBehaviour
             string propertyTitle = ParsePropertyTitle(name);
             switch (name) {
                 case "_materialColor":
-                    GeneratePropertyBoxZeroSlider(propertyTitle, _propertyBoxPosition);
+                    GeneratePropertyBox(0, propertyTitle, _propertyBoxPosition);
                     break;
                 case "_ambientIntensity":
-                    GeneratePropertyBoxOneSlider(propertyTitle, _propertyBoxPosition);
+                    GeneratePropertyBox(1, propertyTitle, _propertyBoxPosition);
                     break;
                 case "_diffuseIntensity":
-                    GeneratePropertyBoxOneSlider(propertyTitle, _propertyBoxPosition);
+                    GeneratePropertyBox(1, propertyTitle, _propertyBoxPosition);
                     break;
                 case "_rimIntensity":
-                    GeneratePropertyBoxTwoSliders(propertyTitle, _propertyBoxPosition);
+                    GeneratePropertyBox(2, propertyTitle, _propertyBoxPosition);
                     break;
                 case "_specularIntensity":
-                    GeneratePropertyBoxTwoSliders(propertyTitle, _propertyBoxPosition);
+                    GeneratePropertyBox(2, propertyTitle, _propertyBoxPosition);
                     break;
             }
         };
@@ -72,8 +72,22 @@ public class UiCanvas : MonoBehaviour
         return char.ToUpper(splitText[0]) + splitText.Substring(1);
     }
 
-    private void GeneratePropertyBoxZeroSlider(string propertyTitle, Vector3 position) {
-        GameObject instance = Instantiate(_propertyBoxZeroSliderPrefab.gameObject);
+    private void GeneratePropertyBox(int numSliders, string propertyTitle, Vector3 position) {
+        GameObject instance;
+        switch (numSliders) {
+            case 0:
+                instance = Instantiate(_propertyBoxZeroSliderPrefab.gameObject);
+                break;
+            case 1:
+                instance = Instantiate(_propertyBoxOneSliderPrefab.gameObject);
+                break;
+            case 2:
+                instance = Instantiate(_propertyBoxTwoSlidersPrefab.gameObject);
+                break;
+            default:
+                return;
+        }
+
         instance.transform.SetParent(_canvas.transform, false);
         instance.name = propertyTitle;
 
@@ -85,43 +99,8 @@ public class UiCanvas : MonoBehaviour
         PropertyBox propertyBox = instance.GetComponent<PropertyBox>();
         propertyBox.PropertyTitleText = propertyTitle;
         propertyBox.ColorPropertyText = $"{propertyTitle} Color";
-
-        _propertyBoxPosition += _propertyBoxOffset;
-    }
-
-    private void GeneratePropertyBoxOneSlider(string propertyTitle, Vector3 position) {
-        GameObject instance = Instantiate(_propertyBoxOneSliderPrefab.gameObject);
-        instance.transform.SetParent(_canvas.transform, false);
-        instance.name = propertyTitle;
-
-        var rectTransform = instance.GetComponent<RectTransform>();
-        rectTransform.anchorMin = new Vector2(0, 1);
-        rectTransform.anchorMax = new Vector2(0, 1);
-        rectTransform.anchoredPosition3D = position;
-
-        PropertyBox propertyBox = instance.GetComponent<PropertyBox>();
-        propertyBox.PropertyTitleText = propertyTitle;
-        propertyBox.ColorPropertyText = $"{propertyTitle} Color";
-        propertyBox.SliderOnePropertyText = $"{propertyTitle} Strength";
-
-        _propertyBoxPosition += _propertyBoxOffset;
-    }
-
-    private void GeneratePropertyBoxTwoSliders(string propertyTitle, Vector3 position) {
-        GameObject instance = Instantiate(_propertyBoxTwoSlidersPrefab.gameObject);
-        instance.transform.SetParent(_canvas.transform, false);
-        instance.name = propertyTitle;
-
-        var rectTransform = instance.GetComponent<RectTransform>();
-        rectTransform.anchorMin = new Vector2(0, 1);
-        rectTransform.anchorMax = new Vector2(0, 1);
-        rectTransform.anchoredPosition3D = position;
-
-        PropertyBox propertyBox = instance.GetComponent<PropertyBox>();
-        propertyBox.PropertyTitleText = propertyTitle;
-        propertyBox.ColorPropertyText = $"{propertyTitle} Color";
-        propertyBox.SliderOnePropertyText = $"{propertyTitle} Strength";
-        propertyBox.SliderTwoPropertyText = $"{propertyTitle} Radius";
+        if (numSliders > 0 ) propertyBox.SliderOnePropertyText = $"{propertyTitle} Strength";
+        if (numSliders > 1) propertyBox.SliderTwoPropertyText = $"{propertyTitle} Radius";
 
         _propertyBoxPosition += _propertyBoxOffset;
     }

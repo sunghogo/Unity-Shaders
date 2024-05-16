@@ -39,7 +39,7 @@ public class PropertyBox : MonoBehaviour, IPointerClickHandler
     public bool Opened;
     public bool Adjusted;
 
-    // Need Awake to make sure properties are properly initialized
+    // Need Awake to make sure properties are properly initialized upon dynamic instantiation
     void Awake()
     {
         _openPanel = GetComponentInChildren<OpenPanel>();
