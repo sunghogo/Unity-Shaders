@@ -249,8 +249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dae520a1fcd7cc44db48a9a1d7aacbc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propertyBoxZeroSliderPrefab: {fileID: 5283968265694273999, guid: 75a014104012c054b97d0d30d33d4455, type: 3}
-  _propertyBoxOneSliderPrefab: {fileID: 5283968265694273999, guid: b1ef0ce155d9b1b409bba53d15aec76d, type: 3}
-  _propertyBoxTwoSlidersPrefab: {fileID: 5283968265694273999, guid: e94f95e34c8d8324faa455b4baefa796, type: 3}
-  Shaders: {fileID: 0}
-  ShaderTitle: {fileID: 0}
+  PropertyBoxZeroSliderPrefab: {fileID: 5283968265694273999, guid: 75a014104012c054b97d0d30d33d4455, type: 3}
+  PropertyBoxOneSliderPrefab: {fileID: 5283968265694273999, guid: b1ef0ce155d9b1b409bba53d15aec76d, type: 3}
+  PropertyBoxTwoSlidersPrefab: {fileID: 5283968265694273999, guid: e94f95e34c8d8324faa455b4baefa796, type: 3}
+  _propertyBoxPosition: {x: 0, y: 0, z: 0}

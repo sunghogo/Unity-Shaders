@@ -1,37 +1,30 @@
 using UnityEngine;
-using System.Linq;
-using TMPro;
-using Unity.VisualScripting;
+
 public class Shaders : MonoBehaviour
 {
     // Add the following shaders and material in the Inspector
-    [SerializeField] private Shader _noLighting;
-    [SerializeField] private Shader _ambientLighting;
-    [SerializeField] private Shader _lambertDiffusionLighting;
-    [SerializeField] private Shader _rimLighting;
-    [SerializeField] private Shader _lambertWithRimLighting;
-    [SerializeField] private Shader _phongSpecularReflection;
-    [SerializeField] private Shader _phongLighting;
-    [SerializeField] private Shader _BlinnPhongSpecularReflection;
-    [SerializeField] private Shader _BlinnPhongLighting;
-    [SerializeField] public Material TestMaterial;
-
-    private Canvas _canvas;
+    public Shader _noLighting;
+    public Shader _ambientLighting;
+    public Shader _lambertDiffusionLighting;
+    public Shader _rimLighting;
+    public Shader _lambertWithRimLighting;
+    public Shader _phongSpecularReflection;
+    public Shader _phongLighting;
+    public Shader _BlinnPhongSpecularReflection;
+    public Shader _BlinnPhongLighting;
+    public Material TestMaterial;
     private UiCanvas _uiCanvas;
-    private TextMeshProUGUI _shaderTitleTmp;
     private Shader[] _shaders;
-    private int _shadersIndex = 0;
+    private int _shadersIndex;
 
-    // Start is called before the first frame update
-    void Start()
+    // Need Awake to make sure Shaders is initialized before UiCanvas
+    void Awake()
     {
+        _shadersIndex = 0;
         _shaders = new Shader[9] {_noLighting, _ambientLighting, _lambertDiffusionLighting, _rimLighting, _lambertWithRimLighting, _phongSpecularReflection, _phongLighting, _BlinnPhongSpecularReflection, _BlinnPhongLighting};
-        _canvas = FindObjectOfType<Canvas>();
-        _uiCanvas = _canvas.GetComponent<UiCanvas>();
-        _shaderTitleTmp = _canvas.GetComponentInChildren<TextMeshProUGUI>();
+        _uiCanvas = FindObjectOfType<Canvas>().GetComponent<UiCanvas>();
 
         UpdateShaders(GetCurrentShader());
-        UpdateText();
     }
 
     // Update is called once per frame
@@ -39,8 +32,7 @@ public class Shaders : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space)) {
             CycleShaders();
-            UpdateText();
-            _uiCanvas.ShadersChanged();
+            _uiCanvas.UpdateUI();
         }
     }
 
@@ -55,16 +47,5 @@ public class Shaders : MonoBehaviour
 
     public Shader GetCurrentShader() {
         return _shaders[_shadersIndex];
-    }
-
-    private void UpdateText() {
-        _shaderTitleTmp.text = $"{ParseShaderName(_shaders[_shadersIndex].name)}";
-    }
-
-    private string ParseShaderName(string shaderName) {
-        string shaderTitle = shaderName.Split('/').ElementAtOrDefault(1);
-        shaderTitle = shaderTitle?.SplitWords(' ') ?? shaderName;
-        if (shaderTitle.Contains('-')) shaderTitle = shaderTitle.Substring(0, shaderTitle.IndexOf('-') + 1) + shaderTitle.Substring(shaderTitle.IndexOf('-') + 2, shaderTitle.Length - shaderTitle.IndexOf('-') - 2);
-        return shaderTitle;
     }
 }

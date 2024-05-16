@@ -2,19 +2,19 @@ using UnityEngine;
 using TMPro;
 using Unity.VisualScripting;
 using System.Collections.Generic;
+using System.Linq;
 
 public class UiCanvas : MonoBehaviour
 
 {
-    public PropertyBox _propertyBoxZeroSliderPrefab;
-    public PropertyBox _propertyBoxOneSliderPrefab;
-    public PropertyBox _propertyBoxTwoSlidersPrefab;
+    public PropertyBox PropertyBoxZeroSliderPrefab;
+    public PropertyBox PropertyBoxOneSliderPrefab;
+    public PropertyBox PropertyBoxTwoSlidersPrefab;
+    private TextMeshProUGUI _shaderTitleTmp;
     private Canvas _canvas;
     private Shaders _shaders;
-    private TextMeshProUGUI _shaderTitleTmp;
     private Dictionary<string, PropertyBox> _propertyBoxes;
     private List<PropertyBox> _propertyBoxesList;
-    private bool _shadersChanged; 
     private Vector3 _initialPropertyBoxPosition;
     [SerializeField] private Vector3 _propertyBoxPosition;
     private Vector3 _propertyBoxOffset;
@@ -28,27 +28,28 @@ public class UiCanvas : MonoBehaviour
 
         _propertyBoxes = new Dictionary<string, PropertyBox>();
         _propertyBoxesList = new List<PropertyBox>();
-        UpdatePropertyBoxes();
 
-        _shadersChanged = true;
         _initialPropertyBoxPosition = new Vector3(240, -240, 0);
         _propertyBoxPosition = _initialPropertyBoxPosition;
         _propertyBoxOffset = new Vector3(0, -70, 0);
+
+        UpdateUI();
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        if (_shadersChanged) {
-            CloseCascadingPropertyBoxes();
-            UpdateCascadingPropertyBoxes();
-            DeactivatePropertyBoxes();
-            ResetBoxPositions();
-            GeneratePropertyBoxes();
-            UpdatePropertyBoxes();
-            _shadersChanged = false;
-        }
         UpdateCascadingPropertyBoxes();
+    }
+
+    public void UpdateUI() {
+        UpdateShaderTitle();
+        CloseCascadingPropertyBoxes();
+        UpdateCascadingPropertyBoxes();
+        DeactivatePropertyBoxes();
+        ResetBoxPositions();
+        GeneratePropertyBoxes();
+        UpdatePropertyBoxes();
     }
 
     private void GeneratePropertyBoxes() {
@@ -84,6 +85,17 @@ public class UiCanvas : MonoBehaviour
         };
     }
 
+    private void UpdateShaderTitle() {
+        _shaderTitleTmp.text = $"{ParseShaderName(_shaders.GetCurrentShader().name)}";
+    }
+
+    private string ParseShaderName(string shaderName) {
+        string shaderTitle = shaderName.Split('/').ElementAtOrDefault(1);
+        shaderTitle = shaderTitle?.SplitWords(' ') ?? shaderName;
+        if (shaderTitle.Contains('-')) shaderTitle = shaderTitle.Substring(0, shaderTitle.IndexOf('-') + 1) + shaderTitle.Substring(shaderTitle.IndexOf('-') + 2, shaderTitle.Length - shaderTitle.IndexOf('-') - 2);
+        return shaderTitle;
+    }
+
     private string ParsePropertyTitle(string name) {
         string splitText = name.Substring(1).SplitWords(' ').Split(' ')[0];
         return char.ToUpper(splitText[0]) + splitText.Substring(1);
@@ -98,13 +110,13 @@ public class UiCanvas : MonoBehaviour
         GameObject instance;
         switch (numSliders) {
             case 0:
-                instance = Instantiate(_propertyBoxZeroSliderPrefab.gameObject);
+                instance = Instantiate(PropertyBoxZeroSliderPrefab.gameObject);
                 break;
             case 1:
-                instance = Instantiate(_propertyBoxOneSliderPrefab.gameObject);
+                instance = Instantiate(PropertyBoxOneSliderPrefab.gameObject);
                 break;
             case 2:
-                instance = Instantiate(_propertyBoxTwoSlidersPrefab.gameObject);
+                instance = Instantiate(PropertyBoxTwoSlidersPrefab.gameObject);
                 break;
             default:
                 return null;
@@ -170,9 +182,5 @@ public class UiCanvas : MonoBehaviour
                 initialBox.Adjusted = false;
             }
         }
-    }
-
-    public void ShadersChanged() {
-        _shadersChanged = true;
     }
 }

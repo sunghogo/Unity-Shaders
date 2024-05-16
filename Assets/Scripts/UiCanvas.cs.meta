@@ -3,7 +3,10 @@ guid: dae520a1fcd7cc44db48a9a1d7aacbc2
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - PropertyBoxZeroSliderPrefab: {instanceID: 0}
+  - PropertyBoxOneSliderPrefab: {instanceID: 0}
+  - PropertyBoxTwoSlidersPrefab: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
