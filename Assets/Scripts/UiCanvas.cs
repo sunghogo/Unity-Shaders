@@ -3,6 +3,7 @@ using TMPro;
 using Unity.VisualScripting;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 public class UiCanvas : MonoBehaviour
 
@@ -48,34 +49,40 @@ public class UiCanvas : MonoBehaviour
         DropDownCascadePropertyBoxes();
         DeactivatePropertyBoxes();
         ResetBoxPositions();
-        GeneratePropertyBoxes();
-        UpdatePropertyBoxes();
-        ReopenAllPropertyBoxes();
+        GenerateUpdatePropertyBoxes();
+        ReopenAllPreviouslyOpenPropertyBoxes();
         DropDownCascadePropertyBoxes();
     }
 
-    private void GeneratePropertyBoxes() {
+    private void GenerateUpdatePropertyBoxes() {
         // Property names are retrieved sequentially in the same order as in the shader so property boxes will always appear int the order
         foreach (var name in _shaders.TestMaterial.GetPropertyNames(MaterialPropertyType.Vector)) {
             if (name.Split('_').Length > 2) continue; // Ignore default Unity Shader properties with the same property title
             string propertyTitle = ParsePropertyTitle(name);
             if (!_propertyBoxes.ContainsKey(propertyTitle)) {
+                PropertyBox box = null;
+                
                 switch (name) {
                     case "_materialColor":
-                        _propertyBoxesList.Add(GeneratePropertyBox(0, propertyTitle, _propertyBoxPosition));
+                        box = GeneratePropertyBox(0, propertyTitle, _propertyBoxPosition);
                         break;
                     case "_ambientIntensity":
-                        _propertyBoxesList.Add(GeneratePropertyBox(1, propertyTitle, _propertyBoxPosition));
+                        box = GeneratePropertyBox(0, propertyTitle, _propertyBoxPosition);
                         break;
                     case "_diffuseIntensity":
-                        _propertyBoxesList.Add(GeneratePropertyBox(1, propertyTitle, _propertyBoxPosition));
+                        box = GeneratePropertyBox(0, propertyTitle, _propertyBoxPosition);
                         break;
                     case "_rimIntensity":
-                        _propertyBoxesList.Add(GeneratePropertyBox(2, propertyTitle, _propertyBoxPosition));
+                        box = GeneratePropertyBox(0, propertyTitle, _propertyBoxPosition);
                         break;
                     case "_specularIntensity":
-                        _propertyBoxesList.Add(GeneratePropertyBox(2, propertyTitle, _propertyBoxPosition));
+                        box = GeneratePropertyBox(0, propertyTitle, _propertyBoxPosition);
                         break;
+                }
+
+                if (box is not null) {
+                    _propertyBoxesList.Add(box);
+                    _propertyBoxes[box.name] = box;
                 }
             } else {
                 var box = _propertyBoxes[propertyTitle];
@@ -142,13 +149,6 @@ public class UiCanvas : MonoBehaviour
         return propertyBox;
     }
 
-    private void UpdatePropertyBoxes() {
-        var propertyBoxes = GetComponentsInChildren<PropertyBox>();
-        foreach (var box in propertyBoxes) {
-            _propertyBoxes[box.name] = box;
-        }
-    }
-
     private void DeactivatePropertyBoxes() {
         foreach (var box in _propertyBoxes.Values) {
             box.gameObject.SetActive(false);
@@ -171,7 +171,7 @@ public class UiCanvas : MonoBehaviour
        }
     }
 
-    private void ReopenAllPropertyBoxes() {
+    private void ReopenAllPreviouslyOpenPropertyBoxes() {
         for (int i = 0; i < _propertyBoxesList.Count; i++) {
             var box = _propertyBoxesList[i];
             if (box.gameObject.activeSelf && box.PreviouslyOpened) box.Open();
