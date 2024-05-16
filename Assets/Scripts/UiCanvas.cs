@@ -13,6 +13,7 @@ public class UiCanvas : MonoBehaviour
     private Shaders _shaders;
     private TextMeshProUGUI _shaderTitleTmp;
     private Dictionary<string, PropertyBox> _propertyBoxes;
+    private List<PropertyBox> _propertyBoxesList;
     private bool _shadersChanged; 
     private Vector3 _initialPropertyBoxPosition;
     [SerializeField] private Vector3 _propertyBoxPosition;
@@ -26,6 +27,7 @@ public class UiCanvas : MonoBehaviour
         _shaderTitleTmp = GetComponentInChildren<TextMeshProUGUI>();
 
         _propertyBoxes = new Dictionary<string, PropertyBox>();
+        _propertyBoxesList = new List<PropertyBox>();
         UpdatePropertyBoxes();
 
         _shadersChanged = true;
@@ -38,42 +40,45 @@ public class UiCanvas : MonoBehaviour
     void LateUpdate()
     {
         if (_shadersChanged) {
+            CloseCascadingPropertyBoxes();
+            UpdateCascadingPropertyBoxes();
             DeactivatePropertyBoxes();
             ResetBoxPositions();
             GeneratePropertyBoxes();
             UpdatePropertyBoxes();
             _shadersChanged = false;
         }
-        // UpdateCascadingPropertyBoxes();
+        UpdateCascadingPropertyBoxes();
     }
 
     private void GeneratePropertyBoxes() {
-        // Property names are retrieved sequentially in the same order as in the shader
+        // Property names are retrieved sequentially in the same order as in the shader so property boxes will always appear int the order
         foreach (var name in _shaders.TestMaterial.GetPropertyNames(MaterialPropertyType.Vector)) {
             if (name.Split('_').Length > 2) continue; // Ignore default Unity Shader properties with the same property title
             string propertyTitle = ParsePropertyTitle(name);
             if (!_propertyBoxes.ContainsKey(propertyTitle)) {
                 switch (name) {
                     case "_materialColor":
-                        GeneratePropertyBox(0, propertyTitle, _propertyBoxPosition);
+                        _propertyBoxesList.Add(GeneratePropertyBox(0, propertyTitle, _propertyBoxPosition));
                         break;
                     case "_ambientIntensity":
-                        GeneratePropertyBox(1, propertyTitle, _propertyBoxPosition);
+                        _propertyBoxesList.Add(GeneratePropertyBox(1, propertyTitle, _propertyBoxPosition));
                         break;
                     case "_diffuseIntensity":
-                        GeneratePropertyBox(1, propertyTitle, _propertyBoxPosition);
+                        _propertyBoxesList.Add(GeneratePropertyBox(1, propertyTitle, _propertyBoxPosition));
                         break;
                     case "_rimIntensity":
-                        GeneratePropertyBox(2, propertyTitle, _propertyBoxPosition);
+                        _propertyBoxesList.Add(GeneratePropertyBox(2, propertyTitle, _propertyBoxPosition));
                         break;
                     case "_specularIntensity":
-                        GeneratePropertyBox(2, propertyTitle, _propertyBoxPosition);
+                        _propertyBoxesList.Add(GeneratePropertyBox(2, propertyTitle, _propertyBoxPosition));
                         break;
                 }
             } else {
                 var box = _propertyBoxes[propertyTitle];
                 ActivatePropertyBox(box);
-                box.GetComponent<RectTransform>().anchoredPosition3D = _propertyBoxPosition;
+                var rectTransform = box.GetComponent<RectTransform>();
+                rectTransform.anchoredPosition3D = _propertyBoxPosition;
                 _propertyBoxPosition += _propertyBoxOffset;
             }
         };
@@ -89,7 +94,7 @@ public class UiCanvas : MonoBehaviour
         return char.ToUpper(splitText[0]) + splitText.Substring(1);
     }
 
-    private void GeneratePropertyBox(int numSliders, string propertyTitle, Vector3 position) {
+    private PropertyBox GeneratePropertyBox(int numSliders, string propertyTitle, Vector3 position) {
         GameObject instance;
         switch (numSliders) {
             case 0:
@@ -102,7 +107,7 @@ public class UiCanvas : MonoBehaviour
                 instance = Instantiate(_propertyBoxTwoSlidersPrefab.gameObject);
                 break;
             default:
-                return;
+                return null;
         }
 
         instance.transform.SetParent(_canvas.transform, false);
@@ -120,6 +125,7 @@ public class UiCanvas : MonoBehaviour
         if (numSliders > 1) propertyBox.SliderTwoPropertyText = $"{propertyTitle} Radius";
 
         _propertyBoxPosition += _propertyBoxOffset;
+        return propertyBox;
     }
 
     private void UpdatePropertyBoxes() {
@@ -143,25 +149,28 @@ public class UiCanvas : MonoBehaviour
         _propertyBoxPosition = _initialPropertyBoxPosition;
     }
 
-    // private void UpdateCascadingPropertyBoxes() {
-    //     if (_propertyBoxes is null) return;
-    //     for (int i = 0; i < _propertyBoxes.Length; i++) {
-    //         var initialBox = _propertyBoxes[i];
-    //         if (initialBox.Opened && !initialBox.Adjusted) {
-    //             for (int j = i + 1; j < _propertyBoxes.Length; j++) {
-    //                 var subsequentBox = _propertyBoxes[j];
-    //                 subsequentBox.transform.Translate(0, -initialBox.OpenedHeight, 0);
-    //             }
-    //             initialBox.Adjusted = true;
-    //         } else if (!initialBox.Opened && initialBox.Adjusted) {
-    //             for (int j = i + 1; j < _propertyBoxes.Length; j++) {
-    //                 var subsequentBox = _propertyBoxes[j];
-    //                 subsequentBox.transform.Translate(0, initialBox.OpenedHeight, 0);
-    //             }
-    //             initialBox.Adjusted = false;
-    //         }
-    //     }
-    // }
+    private void CloseCascadingPropertyBoxes() {
+        for (int i = 0; i < _propertyBoxesList.Count; i++) _propertyBoxesList[i].Close();
+    }
+
+    private void UpdateCascadingPropertyBoxes() {
+        for (int i = 0; i < _propertyBoxesList.Count; i++) {
+            var initialBox = _propertyBoxesList[i];
+            if (initialBox.Opened && !initialBox.Adjusted) {
+                for (int j = i + 1; j < _propertyBoxesList.Count; j++) {
+                    var subsequentBox = _propertyBoxesList[j];
+                    subsequentBox.transform.Translate(0, -initialBox.OpenedHeight, 0);
+                }
+                initialBox.Adjusted = true;
+            } else if (!initialBox.Opened && initialBox.Adjusted) {
+                for (int j = i + 1; j < _propertyBoxesList.Count; j++) {
+                    var subsequentBox = _propertyBoxesList[j];
+                    subsequentBox.transform.Translate(0, initialBox.OpenedHeight, 0);
+                }
+                initialBox.Adjusted = false;
+            }
+        }
+    }
 
     public void ShadersChanged() {
         _shadersChanged = true;

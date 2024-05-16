@@ -97,13 +97,13 @@ public class PropertyBox : MonoBehaviour, IPointerClickHandler
         _colorWheelPanel.Close();
     }
 
-    private void Open() {
+    public void Open() {
         Opened = true;
         _openPanel.Open();
         _closedPanel.Close();
     }
 
-    private void Close() {
+    public void Close() {
         Opened = false;
         _openPanel.Close();
         _closedPanel.Open();
