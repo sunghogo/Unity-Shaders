@@ -3,10 +3,8 @@ using TMPro;
 using Unity.VisualScripting;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 public class UiCanvas : MonoBehaviour
-
 {
     public PropertyBox PropertyBoxZeroSliderPrefab;
     public PropertyBox PropertyBoxOneSliderPrefab;
@@ -20,7 +18,6 @@ public class UiCanvas : MonoBehaviour
     [SerializeField] private Vector3 _propertyBoxPosition;
     private Vector3 _propertyBoxOffset;
 
-    // Start is called before the first frame update
     void Start()
     {
         _canvas = GetComponent<Canvas>();
@@ -37,7 +34,6 @@ public class UiCanvas : MonoBehaviour
         UpdateUI();
     }
 
-    // Update is called once per frame
     void LateUpdate()
     {
         DropDownCascadePropertyBoxes();
